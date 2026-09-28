@@ -37,8 +37,7 @@
             }
           },
           boxShadow: {
-            'elevated-card': '0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 8px 16px -6px rgba(0, 0, 0, 0.04)',
-            'glow-cyan': '0 0 30px -5px rgba(30, 201, 184, 0.25)',
+            'glow-cyan': '0 0 30px -5px rgba(30, 201, 184, 0.3)',
             'glow-amber': '0 0 30px -5px rgba(245, 158, 11, 0.25)',
             'card-dark': '0 12px 30px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)'
           }
@@ -55,12 +54,58 @@
     body {
       background-color: #060E14;
       background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 93, 99, 0.22) 0%, transparent 60%),
-        radial-gradient(circle at 100% 20%, rgba(19, 139, 136, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 0% 80%, rgba(30, 201, 184, 0.05) 0%, transparent 45%);
+        radial-gradient(circle at 50% 0%, rgba(0, 93, 99, 0.24) 0%, transparent 60%),
+        radial-gradient(circle at 100% 25%, rgba(19, 139, 136, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 0% 80%, rgba(30, 201, 184, 0.06) 0%, transparent 45%);
       font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
       color: #E2E8F0;
+    }
+
+    .shiny-text {
+      background: linear-gradient(
+        110deg,
+        #94a3b8 0%,
+        #e2e8f0 35%,
+        #ffffff 50%,
+        #2dd4bf 55%,
+        #94a3b8 70%
+      );
+      background-size: 250% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 4.5s ease-in-out infinite;
+    }
+    @keyframes shine {
+      0% { background-position: 150% 0; }
+      100% { background-position: -150% 0; }
+    }
+
+    /* Fixed Border Feedback (Eliminates the rotating rectangle) */
+    .roster-card {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .roster-card.active-ready {
+      border-color: rgba(45, 212, 191, 0.5) !important;
+      box-shadow: 0 0 25px -3px rgba(45, 212, 191, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .shimmer-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+      transition: all 0.6s ease;
+    }
+    .shimmer-btn:not(:disabled):hover::before {
+      left: 100%;
     }
 
     .hex-pattern-right {
@@ -89,36 +134,37 @@
     }
 
     .dark-panel-card {
-      background: linear-gradient(165deg, rgba(14, 28, 38, 0.85) 0%, rgba(8, 18, 25, 0.95) 100%);
+      background: linear-gradient(165deg, rgba(14, 28, 38, 0.88) 0%, rgba(8, 18, 25, 0.96) 100%);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
+    .tilt-wrapper {
+      perspective: 1000px;
+    }
     .team-card-dark {
       background: linear-gradient(180deg, #0C1A24 0%, #08131B 100%);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.7);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .team-card-dark:hover {
-      transform: translateY(-2px);
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out, box-shadow 0.2s ease;
     }
 
     .fixtures-glass {
       background: linear-gradient(165deg, #091722 0%, #060E15 100%);
-      border: 1px solid rgba(30, 201, 184, 0.16);
+      border: 1px solid rgba(30, 201, 184, 0.18);
       box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.8);
     }
 
     .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(6, 14, 20, 0.8);
+      background: rgba(6, 14, 20, 0.7);
       border-radius: 9999px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -130,11 +176,12 @@
     }
 
     .player-card {
-      transition: all 0.18s ease;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .player-card:hover {
-      background: rgba(20, 38, 51, 0.7);
-      border-color: rgba(45, 212, 191, 0.3);
+      background: rgba(20, 38, 51, 0.75);
+      border-color: rgba(45, 212, 191, 0.35);
+      transform: translateX(2px);
     }
 
     .dragging {
@@ -146,20 +193,26 @@
       background: rgba(45, 212, 191, 0.08) !important;
       box-shadow: 0 0 25px rgba(45, 212, 191, 0.25) !important;
     }
+
+    .token-chip {
+      animation: popIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
 
 <body class="selection:bg-teal-700 selection:text-white flex flex-col relative overflow-x-hidden min-h-screen">
 
-  <!-- Background decorative watermarks -->
   <div class="hex-pattern-right"></div>
   <div class="hex-pattern-left"></div>
 
-  <!-- Top Hero Header Area -->
+  <!-- Header Area -->
   <header class="pt-8 sm:pt-12 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 border-b border-pitch-800/50 relative z-20">
     <div class="max-w-5xl mx-auto text-center flex flex-col items-center">
       
-      <!-- Logo Pill Badge with Football Icon -->
       <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-pitch-900/90 border border-pitch-700/70 shadow-lg mb-5 backdrop-blur-md">
         <div class="w-5 h-5 rounded-full bg-slate-900 border border-teal-500/40 flex items-center justify-center text-teal-300">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
@@ -169,14 +222,12 @@
         <span class="text-xs font-semibold text-slate-200 tracking-wide">AFC Team Generator</span>
       </div>
 
-      <!-- Main Editorial Serif Title -->
-      <h1 class="text-3xl sm:text-5xl md:text-6xl font-serif font-bold text-white tracking-tight leading-tight">
+      <h1 class="text-3xl sm:text-5xl md:text-6xl font-serif font-bold tracking-tight leading-tight shiny-text">
         Organize Teams Effortlessly.
       </h1>
       
-      <!-- Subtitle -->
       <p class="mt-3.5 sm:mt-4 text-xs sm:text-base text-slate-400 max-w-2xl font-normal leading-relaxed">
-        Input names and instantly generate balanced teams with AI power.
+        Input names and instantly generate balanced squads with round-robin fixtures and equal bib distribution.
       </p>
 
     </div>
@@ -185,32 +236,47 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full z-10">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
       
-      <!-- LEFT COLUMN: Roster Input Panel (5 Cols) -->
+      <!-- LEFT COLUMN: Tag Roster Input Panel -->
       <section class="lg:col-span-5 flex flex-col gap-5 lg:sticky lg:top-8">
         
-        <!-- Dark Input Card: Players -->
-        <div class="dark-panel-card rounded-2xl p-5 sm:p-6 flex flex-col text-slate-200">
+        <div id="rosterCardPanel" class="dark-panel-card roster-card rounded-2xl p-5 sm:p-6 flex flex-col text-slate-200 transition-all">
           <div class="flex items-center justify-between mb-3">
-            <label for="playerListInput" class="text-sm font-bold text-white flex items-center gap-2">
-              <span>Players</span>
+            <label for="tagInputField" class="text-sm font-bold text-white flex items-center gap-2">
+              <span>Roster Tags</span>
             </label>
-            <span id="playerCounter" class="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-pitch-950 border border-slate-700/60 text-slate-300">
-              0 players
-            </span>
+            <div class="flex items-center gap-2">
+              <button 
+                id="clearAllBtn"
+                type="button"
+                onclick="clearAllPlayers()"
+                class="hidden text-[11px] text-slate-400 hover:text-rose-400 transition"
+              >
+                Clear all
+              </button>
+              <span id="playerCounter" class="text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-pitch-950 border border-slate-700/60 text-slate-400 transition-all">
+                0 players
+              </span>
+            </div>
           </div>
 
-          <!-- Input Container -->
-          <div class="relative">
-            <textarea
-              id="playerListInput"
-              rows="7"
-              placeholder="Paste or type player names separated by newlines, commas, or tabs..."
-              class="w-full bg-pitch-950/80 border border-slate-700/70 rounded-xl p-3.5 sm:p-4 text-xs sm:text-sm font-mono text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all custom-scrollbar resize-y min-h-[170px]"
-              oninput="handleInputChange()"
-            ></textarea>
+          <!-- Fixed Tag Input Box (Full-width responsive placeholder) -->
+          <div 
+            id="tagContainerBox"
+            class="min-h-[170px] max-h-[290px] overflow-y-auto bg-pitch-950/80 border border-slate-700/70 rounded-xl p-3 flex flex-wrap content-start gap-1.5 focus-within:border-teal-400 focus-within:ring-1 focus-within:ring-teal-400 transition-all custom-scrollbar cursor-text"
+          >
+            <div id="tokensList" class="flex flex-wrap gap-1.5"></div>
+            <input
+              type="text"
+              id="tagInputField"
+              placeholder="Type player & press Enter, or paste list..."
+              class="flex-1 min-w-[120px] bg-transparent text-xs sm:text-sm font-mono text-slate-100 placeholder-slate-500 focus:outline-none py-1 px-1"
+              onkeydown="handleTagKeydown(event)"
+              onpaste="handleTagPaste(event)"
+            />
           </div>
+          <span class="text-[11px] text-slate-500 mt-2 font-mono">Tip: Separate with Enter, comma, or paste your entire roster directly.</span>
 
-          <!-- Dynamic Rule Validation Card -->
+          <!-- Rule Validation Card -->
           <div id="ruleValidationCard" class="mt-4 p-3 rounded-xl bg-pitch-950/60 border border-slate-800 flex items-start gap-3">
             <div id="ruleIcon" class="mt-0.5 shrink-0 text-teal-400">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,18 +285,19 @@
             </div>
             <div class="min-w-0 flex-1">
               <p id="ruleText" class="text-xs text-slate-300 leading-relaxed">
-                Automatic generation requires at least <strong class="text-teal-300 font-semibold">20 players</strong> (5–6 players per team). You can also create teams manually at any time!
+                Automatic generation requires at least <strong class="text-teal-300 font-semibold">20 players</strong> (5–6 players per team). You can also create teams manually!
               </p>
             </div>
           </div>
 
-          <!-- Primary Action Button: Auto-generate (Full width) -->
+          <!-- Primary Action Button -->
           <div class="mt-5 pt-4 border-t border-slate-800/80">
             <button
               id="generateTeamsBtn"
+              type="button"
               onclick="generateTeams()"
               disabled
-              class="w-full py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] shadow-md shadow-teal-950/40 border border-teal-500/20 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed disabled:pointer-events-none"
+              class="shimmer-btn w-full py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] shadow-md shadow-teal-950/40 border border-teal-500/20 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
             >
               <span>Auto-Generate</span>
               <svg class="w-4 h-4 text-teal-200 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,10 +309,9 @@
 
       </section>
 
-      <!-- RIGHT COLUMN: Generated Teams & Match Matrix (7 Cols) -->
+      <!-- RIGHT COLUMN: Generated Teams & Match Matrix -->
       <section class="lg:col-span-7 flex flex-col gap-6">
         
-        <!-- Toolbar Header with Dark Contrast Theme -->
         <div class="team-card-dark rounded-2xl px-5 py-4 border border-slate-800 flex items-center justify-between gap-4 flex-wrap">
           <div class="flex items-center gap-3">
             <h2 class="text-sm sm:text-base font-bold text-white tracking-wide flex items-center gap-2.5">
@@ -256,9 +322,9 @@
             </h2>
           </div>
 
-          <!-- Quick Action Buttons -->
           <div class="flex items-center gap-2">
             <button 
+              type="button"
               onclick="createNewTeam()" 
               id="newTeamToolbarBtn" 
               class="px-3 py-1.5 text-xs font-semibold rounded-xl bg-teal-500/15 hover:bg-teal-500/25 text-teal-200 border border-teal-500/40 hover:border-teal-300 transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
@@ -269,6 +335,7 @@
               <span>New Team</span>
             </button>
             <button 
+              type="button"
               onclick="reshuffleCurrentTeams()" 
               id="reshuffleBtn" 
               class="hidden px-3.5 py-1.5 text-xs font-semibold rounded-xl bg-pitch-900 hover:bg-pitch-850 text-teal-200 border border-teal-500/30 hover:border-teal-400 transition-all flex items-center gap-2 active:scale-95 shadow-sm"
@@ -281,7 +348,7 @@
           </div>
         </div>
 
-        <!-- Empty State Placeholder with Sleek Dark Aesthetics -->
+        <!-- Empty State Placeholder -->
         <div id="emptyStatePlaceholder" class="team-card-dark rounded-2xl p-10 sm:p-14 text-center flex flex-col items-center justify-center min-h-[340px] border border-dashed border-slate-800">
           <div class="w-16 h-16 rounded-2xl bg-slate-900/90 border border-slate-700/80 flex items-center justify-center mb-4 text-teal-400 shadow-glow-cyan">
             <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -296,9 +363,10 @@
           </div>
           <h3 class="text-base sm:text-lg font-bold text-white mb-1.5 font-serif tracking-tight">No Teams Formed Yet</h3>
           <p class="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed mb-5">
-            Auto-generate balanced squads using the roster on the left, or manually create your first team right now.
+            Auto-generate balanced squads using the roster tags on the left, or manually create your first team right now.
           </p>
           <button
+            type="button"
             onclick="createNewTeam()"
             class="px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] border border-teal-500/40 shadow-lg shadow-teal-950/40 flex items-center gap-2 transition active:scale-95"
           >
@@ -309,10 +377,10 @@
           </button>
         </div>
 
-        <!-- Teams Grid Container: Dark cards with ambient colored halos & avatars -->
+        <!-- Teams Grid Container -->
         <div id="teamsContainer" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
 
-        <!-- Bottom Tournament Matchups / Schedule -->
+        <!-- Fixtures Section -->
         <div id="bottomMatchupsSection" class="hidden fixtures-glass rounded-2xl p-5 sm:p-6 flex flex-col gap-5">
           <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
             <div class="flex items-center gap-3">
@@ -323,7 +391,6 @@
               </div>
               <div>
                 <h3 class="text-sm sm:text-base font-bold text-white tracking-wide">Tournament Match Fixtures</h3>
-                <p class="text-[11px] sm:text-xs text-teal-400 font-medium">Full Round Robin Schedule</p>
               </div>
             </div>
             
@@ -332,7 +399,7 @@
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 2l4 5-3 3v12H7V10L4 7l4-5h2.5a4 4 0 007 0H16z"/>
                 </svg>
-                <span>Equal Bibs Active</span>
+                <span>Balanced Bibs</span>
               </span>
               <span id="matchupSummaryBadge" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-pitch-950 text-teal-300 border border-slate-800 shadow-sm shrink-0">
                 0 / 0 Done
@@ -340,7 +407,11 @@
             </div>
           </div>
 
-          <div id="matchupsRoundsContainer" class="space-y-6"></div>
+          <!-- Carousel Round Selector Tabs -->
+          <div id="roundTabsContainer" class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar"></div>
+
+          <!-- Active Carousel Round Content -->
+          <div id="activeRoundViewContainer"></div>
         </div>
 
       </section>
@@ -348,7 +419,7 @@
     </div>
   </main>
 
-  <!-- Add Player Modal Dialog -->
+  <!-- Add Player Modal -->
   <div id="addPlayerModal" onclick="if(event.target === this) closeAddPlayerModal()" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm transition-all duration-200">
     <div class="dark-panel-card w-full max-w-md rounded-2xl p-5 sm:p-6 border border-slate-700/80 shadow-2xl relative" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between pb-3.5 border-b border-slate-800">
@@ -363,7 +434,7 @@
             <p id="addPlayerModalSubtitle" class="text-xs text-slate-400">Enter player name to manually insert into roster</p>
           </div>
         </div>
-        <button onclick="closeAddPlayerModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+        <button type="button" onclick="closeAddPlayerModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
@@ -402,123 +473,179 @@
     </div>
   </div>
 
-  <!-- Notification Toast Container -->
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
-    // 12 completely unique, high-contrast visual palettes so no two teams have matching highlights
     const TEAM_THEMES = [
       { 
         name: 'Cyan', 
         border: 'border-cyan-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(34,211,238,0.28)]', 
         iconBg: 'bg-cyan-500/15 text-cyan-300 border-cyan-400/40',
-        avatarBg: 'bg-cyan-950/80 text-cyan-200 border-cyan-500/40',
-        badgeBg: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30'
+        avatarBg: 'bg-cyan-950/80 text-cyan-200 border-cyan-500/40'
       },
       { 
         name: 'Amber', 
         border: 'border-amber-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(251,191,36,0.28)]', 
         iconBg: 'bg-amber-500/15 text-amber-300 border-amber-400/40',
-        avatarBg: 'bg-amber-950/80 text-amber-200 border-amber-500/40',
-        badgeBg: 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+        avatarBg: 'bg-amber-950/80 text-amber-200 border-amber-500/40'
       },
       { 
         name: 'Purple', 
         border: 'border-purple-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(192,132,252,0.28)]', 
         iconBg: 'bg-purple-500/15 text-purple-300 border-purple-400/40',
-        avatarBg: 'bg-purple-950/80 text-purple-200 border-purple-500/40',
-        badgeBg: 'bg-purple-500/15 text-purple-300 border-purple-500/30'
+        avatarBg: 'bg-purple-950/80 text-purple-200 border-purple-500/40'
       },
       { 
         name: 'Emerald', 
         border: 'border-emerald-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(52,211,153,0.28)]', 
         iconBg: 'bg-emerald-500/15 text-emerald-300 border-emerald-400/40',
-        avatarBg: 'bg-emerald-950/80 text-emerald-200 border-emerald-500/40',
-        badgeBg: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+        avatarBg: 'bg-emerald-950/80 text-emerald-200 border-emerald-500/40'
       },
       { 
         name: 'Rose', 
         border: 'border-rose-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(251,113,133,0.28)]', 
         iconBg: 'bg-rose-500/15 text-rose-300 border-rose-400/40',
-        avatarBg: 'bg-rose-950/80 text-rose-200 border-rose-500/40',
-        badgeBg: 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+        avatarBg: 'bg-rose-950/80 text-rose-200 border-rose-500/40'
       },
       { 
         name: 'Blue', 
         border: 'border-blue-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(96,165,250,0.28)]', 
         iconBg: 'bg-blue-500/15 text-blue-300 border-blue-400/40',
-        avatarBg: 'bg-blue-950/80 text-blue-200 border-blue-500/40',
-        badgeBg: 'bg-blue-500/15 text-blue-300 border-blue-500/30'
+        avatarBg: 'bg-blue-950/80 text-blue-200 border-blue-500/40'
       },
       { 
         name: 'Orange', 
         border: 'border-orange-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(251,146,60,0.28)]', 
         iconBg: 'bg-orange-500/15 text-orange-300 border-orange-400/40',
-        avatarBg: 'bg-orange-950/80 text-orange-200 border-orange-500/40',
-        badgeBg: 'bg-orange-500/15 text-orange-300 border-orange-500/30'
+        avatarBg: 'bg-orange-950/80 text-orange-200 border-orange-500/40'
       },
       { 
         name: 'Fuchsia', 
         border: 'border-fuchsia-400/50', 
         glow: 'shadow-[0_0_22px_-2px_rgba(232,121,249,0.28)]', 
         iconBg: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-400/40',
-        avatarBg: 'bg-fuchsia-950/80 text-fuchsia-200 border-fuchsia-500/40',
-        badgeBg: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/30'
-      },
-      { 
-        name: 'Lime', 
-        border: 'border-lime-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(163,230,53,0.28)]', 
-        iconBg: 'bg-lime-500/15 text-lime-300 border-lime-400/40',
-        avatarBg: 'bg-lime-950/80 text-lime-200 border-lime-500/40',
-        badgeBg: 'bg-lime-500/15 text-lime-300 border-lime-500/30'
-      },
-      { 
-        name: 'Indigo', 
-        border: 'border-indigo-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(129,140,248,0.28)]', 
-        iconBg: 'bg-indigo-500/15 text-indigo-300 border-indigo-400/40',
-        avatarBg: 'bg-indigo-950/80 text-indigo-200 border-indigo-500/40',
-        badgeBg: 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
-      },
-      { 
-        name: 'Teal', 
-        border: 'border-teal-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(45,212,191,0.28)]', 
-        iconBg: 'bg-teal-500/15 text-teal-300 border-teal-400/40',
-        avatarBg: 'bg-teal-950/80 text-teal-200 border-teal-500/40',
-        badgeBg: 'bg-teal-500/15 text-teal-300 border-teal-500/30'
-      },
-      { 
-        name: 'Pink', 
-        border: 'border-pink-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(244,114,182,0.28)]', 
-        iconBg: 'bg-pink-500/15 text-pink-300 border-pink-400/40',
-        avatarBg: 'bg-pink-950/80 text-pink-200 border-pink-500/40',
-        badgeBg: 'bg-pink-500/15 text-pink-300 border-pink-500/30'
+        avatarBg: 'bg-fuchsia-950/80 text-fuchsia-200 border-fuchsia-500/40'
       }
     ];
 
     let state = {
-      teams: [], // [{ id, teamNumber, players: [...] }]
-      rounds: [], // [{ roundNumber, byeTeamNumber, matches: [...] }]
+      playerTags: [],
+      teams: [],
+      rounds: [],
+      activeRoundIndex: 0,
       draggedItem: null
     };
 
     let targetTeamIndexForAdd = null;
 
-    /**
-     * Calculates the optimal team distribution for automated generation:
-     * - Minimum 4 teams (totalTeams >= 4)
-     * - Each team has 5 to 6 players
-     */
+    document.addEventListener('DOMContentLoaded', () => {
+      const containerBox = document.getElementById('tagContainerBox');
+      const input = document.getElementById('tagInputField');
+      if (containerBox && input) {
+        containerBox.addEventListener('click', (e) => {
+          if (!e.target.closest('button') && !e.target.closest('.token-chip')) {
+            input.focus();
+          }
+        });
+      }
+      updateValidationUI();
+    });
+
+    function addPlayerTag(name) {
+      const trimmed = name.trim();
+      if (!trimmed) return false;
+      const lower = trimmed.toLowerCase();
+      if (state.playerTags.some(p => p.toLowerCase() === lower)) {
+        showToast(`"${trimmed}" is already in roster`, 'error');
+        return false;
+      }
+      state.playerTags.push(trimmed);
+      renderPlayerTags();
+      updateValidationUI();
+      return true;
+    }
+
+    function removePlayerTag(index) {
+      state.playerTags.splice(index, 1);
+      renderPlayerTags();
+      updateValidationUI();
+    }
+
+    function clearAllPlayers() {
+      state.playerTags = [];
+      renderPlayerTags();
+      updateValidationUI();
+      showToast('Cleared roster list', 'info');
+    }
+
+    function renderPlayerTags() {
+      const container = document.getElementById('tokensList');
+      const clearBtn = document.getElementById('clearAllBtn');
+      const input = document.getElementById('tagInputField');
+      container.innerHTML = '';
+
+      if (state.playerTags.length > 0) {
+        clearBtn.classList.remove('hidden');
+        input.placeholder = "Add name...";
+      } else {
+        clearBtn.classList.add('hidden');
+        input.placeholder = "Type player & press Enter, or paste list...";
+      }
+
+      state.playerTags.forEach((name, idx) => {
+        const chip = document.createElement('span');
+        chip.className = 'token-chip inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono bg-pitch-900 border border-teal-500/30 text-teal-200 hover:border-teal-400 transition-all select-none shadow-sm';
+        chip.innerHTML = `
+          <span>${escapeHtml(name)}</span>
+          <button 
+            type="button" 
+            onclick="removePlayerTag(${idx})" 
+            class="text-slate-400 hover:text-rose-400 hover:bg-rose-500/20 rounded p-0.5 transition"
+            title="Remove"
+          >
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        `;
+        container.appendChild(chip);
+      });
+    }
+
+    function handleTagKeydown(e) {
+      const input = e.target;
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        if (input.value.trim()) {
+          addPlayerTag(input.value);
+          input.value = '';
+        }
+      } else if (e.key === 'Backspace' && !input.value && state.playerTags.length > 0) {
+        removePlayerTag(state.playerTags.length - 1);
+      }
+    }
+
+    function handleTagPaste(e) {
+      e.preventDefault();
+      const pasteText = (e.clipboardData || window.clipboardData).getData('text');
+      const tokens = pasteText.split(/[\n,\t\r]+/).map(t => t.trim()).filter(Boolean);
+      let added = 0;
+      tokens.forEach(tok => {
+        if (addPlayerTag(tok)) added++;
+      });
+      e.target.value = '';
+      if (added > 0) {
+        showToast(`Imported ${added} players`, 'success');
+      }
+    }
+
     function calculateTeamDistribution(totalPlayers) {
       if (totalPlayers < 20) {
         return {
@@ -559,41 +686,23 @@
       };
     }
 
-    function parseInputPlayers() {
-      const text = document.getElementById('playerListInput').value;
-      const lines = text
-        .split(/[\n,\t\r]+/)
-        .map(item => item.trim())
-        .filter(item => item.length > 0);
-
-      const uniqueMap = new Map();
-      lines.forEach(name => {
-        const lower = name.toLowerCase();
-        if (!uniqueMap.has(lower)) {
-          uniqueMap.set(lower, name);
-        }
-      });
-
-      return Array.from(uniqueMap.values());
-    }
-
-    function handleInputChange() {
-      const players = parseInputPlayers();
-      const count = players.length;
-      
+    function updateValidationUI() {
+      const count = state.playerTags.length;
       const counterEl = document.getElementById('playerCounter');
       const ruleText = document.getElementById('ruleText');
       const ruleIcon = document.getElementById('ruleIcon');
       const generateBtn = document.getElementById('generateTeamsBtn');
+      const panel = document.getElementById('rosterCardPanel');
 
       counterEl.textContent = `${count} ${count === 1 ? 'player' : 'players'}`;
 
       if (count === 0) {
         counterEl.className = 'text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-pitch-950 border border-slate-700/60 text-slate-400';
-        ruleText.innerHTML = `Automatic generation requires at least <strong class="text-teal-300 font-semibold">20 players</strong> (5–6 players per team). You can also create teams manually at any time!`;
+        ruleText.innerHTML = `Automatic generation requires at least <strong class="text-teal-300 font-semibold">20 players</strong> (5–6 players per team). You can also create teams manually!`;
         ruleText.className = 'text-xs text-slate-300 leading-relaxed';
         ruleIcon.className = 'mt-0.5 shrink-0 text-teal-400';
         generateBtn.disabled = true;
+        panel.classList.remove('active-ready');
         return;
       }
 
@@ -605,19 +714,18 @@
         ruleText.className = 'text-xs text-amber-300 leading-relaxed font-sans font-medium';
         ruleIcon.className = 'mt-0.5 shrink-0 text-amber-400';
         generateBtn.disabled = true;
+        panel.classList.remove('active-ready');
       } else {
         counterEl.className = 'text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-teal-950/70 text-teal-300 border border-teal-500/50';
         const parts = [];
-        if (dist.count6 > 0) {
-          parts.push(`${dist.count6} ${dist.count6 === 1 ? 'team' : 'teams'} of 6`);
-        }
-        if (dist.count5 > 0) {
-          parts.push(`${dist.count5} ${dist.count5 === 1 ? 'team' : 'teams'} of 5`);
-        }
-        ruleText.innerHTML = `Valid auto-balance configuration: <strong class="text-white font-bold">${dist.totalTeams} Teams</strong> (${parts.join(', ')}).`;
+        if (dist.count6 > 0) parts.push(`${dist.count6} ${dist.count6 === 1 ? 'team' : 'teams'} of 6`);
+        if (dist.count5 > 0) parts.push(`${dist.count5} ${dist.count5 === 1 ? 'team' : 'teams'} of 5`);
+        
+        ruleText.innerHTML = `Ready to balance: <strong class="text-white font-bold">${dist.totalTeams} Teams</strong> (${parts.join(', ')}).`;
         ruleText.className = 'text-xs text-teal-200 leading-relaxed font-sans';
         ruleIcon.className = 'mt-0.5 shrink-0 text-teal-400';
         generateBtn.disabled = false;
+        panel.classList.add('active-ready');
       }
     }
 
@@ -630,44 +738,30 @@
       return copy;
     }
 
-    /**
-     * Balances bib assignments across all matches using mathematical regular/near-regular
-     * tournament graph orientation so every team's bib count is identical
-     * (or differs by at most 1 when total games per team is odd).
-     */
     function assignEqualBibs(schedule, teams) {
       if (!teams || teams.length < 2) return;
-
       const n = teams.length;
       const teamIndices = new Map();
       teams.forEach((t, i) => teamIndices.set(t.teamNumber, i));
 
-      // Gather all matches
       const allMatches = [];
-      schedule.forEach(round => {
-        round.matches.forEach(m => allMatches.push(m));
-      });
+      schedule.forEach(round => round.matches.forEach(m => allMatches.push(m)));
 
-      // Pair-based tournament graph orientation
-      // For odd n: standard cyclic orientation guarantees every vertex has exactly (n-1)/2 out-degree
-      // For even n: standard near-regular orientation guarantees n/2 vertices have n/2 and n/2 vertices have (n/2)-1
       const orientationMatrix = Array.from({ length: n }, () => Array(n).fill(null));
 
       if (n % 2 !== 0) {
-        // Odd number of teams: perfect regular tournament
         for (let i = 0; i < n; i++) {
           for (let j = 0; j < n; j++) {
             if (i === j) continue;
             const diff = (j - i + n) % n;
             if (diff >= 1 && diff <= (n - 1) / 2) {
-              orientationMatrix[i][j] = i; // i wears bibs against j
+              orientationMatrix[i][j] = i;
               orientationMatrix[j][i] = i;
             }
           }
         }
       } else {
-        // Even number of teams: orient K_{n-1} cyclically, then connect the nth team
-        const subN = n - 1; // odd
+        const subN = n - 1;
         for (let i = 0; i < subN; i++) {
           for (let j = 0; j < subN; j++) {
             if (i === j) continue;
@@ -678,22 +772,18 @@
             }
           }
         }
-
         const lastIdx = n - 1;
         for (let i = 0; i < subN; i++) {
           if (i % 2 === 0) {
-            // lastIdx wears bib against i
             orientationMatrix[lastIdx][i] = lastIdx;
             orientationMatrix[i][lastIdx] = lastIdx;
           } else {
-            // i wears bib against lastIdx
             orientationMatrix[i][lastIdx] = i;
             orientationMatrix[lastIdx][i] = i;
           }
         }
       }
 
-      // Assign bib based on orientation matrix
       allMatches.forEach(match => {
         const u = teamIndices.get(match.teamANumber);
         const v = teamIndices.get(match.teamBNumber);
@@ -704,30 +794,6 @@
           match.bibTeamNumber = match.teamANumber;
         }
       });
-
-      // Post-optimization pass to balance any residual matches
-      const bibCounts = {};
-      teams.forEach(t => { bibCounts[t.teamNumber] = 0; });
-      allMatches.forEach(m => {
-        if (m.bibTeamNumber) bibCounts[m.bibTeamNumber]++;
-      });
-
-      let changed = true;
-      let passes = 0;
-      while (changed && passes < 100) {
-        changed = false;
-        passes++;
-        for (const match of allMatches) {
-          const currentBib = match.bibTeamNumber;
-          const otherTeam = (currentBib === match.teamANumber) ? match.teamBNumber : match.teamANumber;
-          if (bibCounts[currentBib] - bibCounts[otherTeam] >= 2) {
-            bibCounts[currentBib]--;
-            bibCounts[otherTeam]++;
-            match.bibTeamNumber = otherTeam;
-            changed = true;
-          }
-        }
-      }
     }
 
     function buildRoundRobinSchedule(teams) {
@@ -745,7 +811,6 @@
           for (let s = 1; s <= numPairs; s++) {
             const idxA = (k - s + n) % n;
             const idxB = (k + s) % n;
-
             const teamA = teams[n - 1 - idxA];
             const teamB = teams[n - 1 - idxB];
 
@@ -818,27 +883,29 @@
     }
 
     function generateTeams() {
-      const players = parseInputPlayers();
-      const dist = calculateTeamDistribution(players.length);
+      const input = document.getElementById('tagInputField');
+      if (input && input.value.trim()) {
+        addPlayerTag(input.value.trim());
+        input.value = '';
+      }
 
+      const dist = calculateTeamDistribution(state.playerTags.length);
       if (!dist.valid) {
         showToast(dist.reason, 'error');
         return;
       }
 
-      const shuffledPlayers = shuffleArray(players);
+      const shuffledPlayers = shuffleArray(state.playerTags);
       let playerIndex = 0;
       const newTeams = [];
 
       for (let t = 0; t < dist.teamSizes.length; t++) {
         const size = dist.teamSizes[t];
         const teamMembers = [];
-        
         for (let m = 0; m < size; m++) {
           teamMembers.push(shuffledPlayers[playerIndex]);
           playerIndex++;
         }
-
         teamMembers.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 
         newTeams.push({
@@ -850,46 +917,39 @@
 
       state.teams = newTeams;
       state.rounds = buildRoundRobinSchedule(newTeams);
+      state.activeRoundIndex = 0;
 
       renderTeams();
-      renderBottomMatchups();
-      showToast(`Generated ${newTeams.length} teams with full fixtures!`, 'success');
+      renderCarouselFixtures();
+      showToast(`Generated ${newTeams.length} teams with balanced schedule!`, 'success');
     }
 
     function reshuffleCurrentTeams() {
       const allCurrent = [];
-      state.teams.forEach(t => {
-        t.players.forEach(p => allCurrent.push(p));
-      });
+      state.teams.forEach(t => t.players.forEach(p => allCurrent.push(p)));
 
       if (allCurrent.length < 2) {
         showToast('Add more players before reshuffling', 'error');
         return;
       }
 
-      // If fewer than 20 players, evenly distribute across current number of teams
-      if (allCurrent.length < 20 && state.teams.length >= 2) {
-        const shuffled = shuffleArray(allCurrent);
-        const teamCount = state.teams.length;
-        state.teams.forEach(t => { t.players = []; });
-        
-        shuffled.forEach((player, idx) => {
-          state.teams[idx % teamCount].players.push(player);
-        });
+      const shuffled = shuffleArray(allCurrent);
+      const teamCount = state.teams.length;
+      state.teams.forEach(t => { t.players = []; });
+      
+      shuffled.forEach((player, idx) => {
+        state.teams[idx % teamCount].players.push(player);
+      });
 
-        state.teams.forEach(t => {
-          t.players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-        });
+      state.teams.forEach(t => {
+        t.players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+      });
 
-        document.getElementById('playerListInput').value = allCurrent.join('\n');
-        handleInputChange();
-        renderTeams();
-        showToast(`Reshuffled ${allCurrent.length} players across ${teamCount} teams!`, 'success');
-        return;
-      }
-
-      document.getElementById('playerListInput').value = allCurrent.join('\n');
-      generateTeams();
+      state.playerTags = [...allCurrent];
+      renderPlayerTags();
+      updateValidationUI();
+      renderTeams();
+      showToast(`Reshuffled across ${teamCount} squads!`, 'success');
     }
 
     function getInitials(name) {
@@ -899,12 +959,8 @@
       return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }
 
-    /**
-     * Creates a new team manually without player count restrictions.
-     */
     function createNewTeam() {
       if (!state.teams) state.teams = [];
-      
       const nextNum = state.teams.length > 0 
         ? Math.max(...state.teams.map(t => t.teamNumber)) + 1 
         : 1;
@@ -922,24 +978,15 @@
       }
 
       renderTeams();
-      renderBottomMatchups();
-      showToast(`Created Team ${nextNum}. Click "Add" on the card to populate members!`, 'success');
+      renderCarouselFixtures();
+      showToast(`Created Team ${nextNum}`, 'success');
     }
 
-    /**
-     * Removes an entire team and recalculates consecutive numbers and tournament fixtures.
-     */
     function removeTeam(teamIndex) {
       if (!state.teams || !state.teams[teamIndex]) return;
       const removed = state.teams.splice(teamIndex, 1)[0];
-
-      // Renumber remaining teams consecutively
-      state.teams.forEach((t, i) => {
-        t.teamNumber = i + 1;
-      });
-
-      // Synchronize player input textarea
-      syncRosterTextarea();
+      state.teams.forEach((t, i) => { t.teamNumber = i + 1; });
+      syncTagsFromTeams();
 
       if (state.teams.length >= 2) {
         state.rounds = buildRoundRobinSchedule(state.teams);
@@ -948,28 +995,43 @@
       }
 
       renderTeams();
-      renderBottomMatchups();
+      renderCarouselFixtures();
       showToast(`Removed Team ${removed.teamNumber}`, 'info');
     }
 
-    /**
-     * Removes a single player from a specific team.
-     */
     function removePlayerFromTeam(teamIndex, playerIndex) {
       const team = state.teams[teamIndex];
       if (!team) return;
       const [removed] = team.players.splice(playerIndex, 1);
-
-      syncRosterTextarea();
+      syncTagsFromTeams();
       renderTeams();
       showToast(`Removed ${removed} from Team ${team.teamNumber}`, 'info');
     }
 
-    function syncRosterTextarea() {
+    function syncTagsFromTeams() {
       const allCurrent = [];
       state.teams.forEach(t => t.players.forEach(p => allCurrent.push(p)));
-      document.getElementById('playerListInput').value = allCurrent.join('\n');
-      handleInputChange();
+      state.playerTags = allCurrent;
+      renderPlayerTags();
+      updateValidationUI();
+    }
+
+    function applyTiltEffect(card) {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -5;
+        const rotateY = ((x - centerX) / centerX) * 5;
+
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+      });
     }
 
     function renderTeams() {
@@ -1000,32 +1062,24 @@
         bottomMatchups.classList.add('hidden');
       }
 
-      // Compute how many times each team wears bibs
-      const bibStats = {};
-      state.teams.forEach(t => { bibStats[t.teamNumber] = 0; });
-      if (state.rounds) {
-        state.rounds.forEach(r => {
-          r.matches.forEach(m => {
-            if (m.bibTeamNumber) {
-              bibStats[m.bibTeamNumber] = (bibStats[m.bibTeamNumber] || 0) + 1;
-            }
-          });
-        });
-      }
-
       container.innerHTML = '';
 
       state.teams.forEach((team, teamIndex) => {
         const theme = TEAM_THEMES[teamIndex % TEAM_THEMES.length];
+        
+        const wrapper = document.createElement('div');
+        wrapper.className = 'tilt-wrapper';
+
         const teamCard = document.createElement('div');
-        teamCard.className = `team-dropzone team-card-dark rounded-2xl overflow-hidden border ${theme.border} ${theme.glow} transition-all duration-200 flex flex-col justify-between`;
+        teamCard.className = `team-dropzone team-card-dark rounded-2xl overflow-hidden border ${theme.border} ${theme.glow} flex flex-col justify-between`;
         teamCard.dataset.teamIndex = teamIndex;
+
+        applyTiltEffect(teamCard);
 
         teamCard.addEventListener('dragover', handleDragOver);
         teamCard.addEventListener('dragleave', handleDragLeave);
         teamCard.addEventListener('drop', handleDrop);
 
-        // Header with Add Player and Delete Team options
         const header = document.createElement('div');
         header.className = 'px-4 py-3 bg-slate-900/60 border-b border-slate-800/80 flex items-center justify-between';
         header.innerHTML = `
@@ -1049,10 +1103,10 @@
               </svg>
               <span>Add</span>
             </button>
-            <button
+            <button 
               type="button"
-              onclick="removeTeam(${teamIndex})"
-              title="Delete Team ${team.teamNumber}"
+              onclick="removeTeam(${teamIndex})" 
+              title="Delete Team"
               class="p-1 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/30 transition-all active:scale-95"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1062,7 +1116,6 @@
           </div>
         `;
 
-        // Players List with Circular Avatar Icons & Delete capability
         const playerList = document.createElement('div');
         playerList.className = 'p-3 space-y-1.5 flex-1 min-h-[90px]';
 
@@ -1071,6 +1124,7 @@
             <div class="h-20 border border-dashed border-slate-800 rounded-xl flex flex-col items-center justify-center text-center p-2">
               <span class="text-[11px] text-slate-500">No players yet</span>
               <button 
+                type="button"
                 onclick="openAddPlayerModal(${teamIndex})" 
                 class="mt-1 text-[11px] text-teal-400 hover:underline font-semibold"
               >
@@ -1100,6 +1154,7 @@
               </div>
               <div class="flex items-center gap-1.5">
                 <button 
+                  type="button"
                   onclick="event.stopPropagation(); removePlayerFromTeam(${teamIndex}, ${playerIndex})" 
                   title="Remove player"
                   class="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-rose-400 p-0.5 rounded hover:bg-slate-800 transition-opacity"
@@ -1113,15 +1168,12 @@
                 </span>
               </div>
             `;
-
             playerList.appendChild(item);
           });
         }
 
-        // Card Footer supporting >6 members gracefully
         const footer = document.createElement('div');
         const size = team.players.length;
-        
         let badgeColor = 'text-slate-300';
         let badgeLabel = `${size} Members`;
         if (size > 6) {
@@ -1146,122 +1198,146 @@
         teamCard.appendChild(header);
         teamCard.appendChild(playerList);
         teamCard.appendChild(footer);
-        container.appendChild(teamCard);
+        wrapper.appendChild(teamCard);
+        container.appendChild(wrapper);
       });
     }
 
-    function renderBottomMatchups() {
-      const container = document.getElementById('matchupsRoundsContainer');
+    function renderCarouselFixtures() {
+      const tabsContainer = document.getElementById('roundTabsContainer');
+      const viewContainer = document.getElementById('activeRoundViewContainer');
       const badge = document.getElementById('matchupSummaryBadge');
-      container.innerHTML = '';
+
+      tabsContainer.innerHTML = '';
+      viewContainer.innerHTML = '';
 
       if (!state.rounds || state.rounds.length === 0) {
-        container.innerHTML = '<p class="text-xs text-slate-400">At least 2 teams are required to generate tournament match fixtures.</p>';
+        viewContainer.innerHTML = '<p class="text-xs text-slate-400">At least 2 teams are required to generate tournament fixtures.</p>';
         badge.textContent = '0 / 0 Done';
         return;
       }
 
       let totalGames = 0;
       let completedGames = 0;
-
       state.rounds.forEach(round => {
         totalGames += round.matches.length;
         completedGames += round.matches.filter(m => m.completed).length;
       });
-
       badge.textContent = `${completedGames} / ${totalGames} Done`;
 
-      state.rounds.forEach((round) => {
-        const roundBlock = document.createElement('div');
-        roundBlock.className = 'space-y-3';
+      if (state.activeRoundIndex >= state.rounds.length) {
+        state.activeRoundIndex = 0;
+      }
 
-        const roundHeader = document.createElement('div');
-        roundHeader.className = 'flex flex-wrap items-center justify-between gap-2 px-1';
-        roundHeader.innerHTML = `
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-teal-300 bg-slate-900 border border-slate-800 px-2.5 py-0.5 rounded-md font-mono">
-              Round ${round.roundNumber}
-            </span>
-            <span class="text-xs text-slate-400 font-mono">${round.matches.length} ${round.matches.length === 1 ? 'Match' : 'Matches'}</span>
-          </div>
-          ${round.byeTeamNumber ? `
-            <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/25">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-              <span>Sitting out: Team ${round.byeTeamNumber}</span>
-            </div>
-          ` : ''}
-        `;
-        roundBlock.appendChild(roundHeader);
-
-        const gamesGrid = document.createElement('div');
-        gamesGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-2.5';
-
-        round.matches.forEach((match) => {
-          const card = document.createElement('div');
-          card.className = `p-3 rounded-xl border transition-all flex items-center justify-between gap-3 ${
-            match.completed 
-              ? 'bg-teal-950/30 border-teal-500/40 shadow-sm' 
-              : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
-          }`;
-
-          const isTeamABibs = match.bibTeamNumber === match.teamANumber;
-          const isTeamBBibs = match.bibTeamNumber === match.teamBNumber;
-
-          const bibIcon = `
-            <span class="inline-flex items-center justify-center p-1 rounded bg-amber-400/20 text-amber-300 text-[10px] border border-amber-400/30 shrink-0 ml-1" title="Wearing Bibs">
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                <path d="M16 2l4 5-3 3v12H7V10L4 7l4-5h2.5a4 4 0 007 0H16z"/>
-              </svg>
-            </span>
-          `;
-
-          card.innerHTML = `
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold ${match.completed ? 'bg-teal-500/20 text-teal-300' : 'bg-slate-900 text-slate-400'} border border-slate-800 shrink-0">
-                Match ${match.gameNumber}
-              </span>
-              <div class="flex items-center flex-wrap gap-2 text-xs font-bold">
-                <span class="inline-flex items-center ${isTeamABibs ? 'text-amber-300' : (match.completed ? 'text-teal-200' : 'text-white')}">
-                  <span>Team ${match.teamANumber}</span>
-                  ${isTeamABibs ? bibIcon : ''}
-                </span>
-                <span class="text-[10px] font-mono text-slate-500">vs</span>
-                <span class="inline-flex items-center ${isTeamBBibs ? 'text-amber-300' : (match.completed ? 'text-teal-200' : 'text-white')}">
-                  <span>Team ${match.teamBNumber}</span>
-                  ${isTeamBBibs ? bibIcon : ''}
-                </span>
-              </div>
-            </div>
-          `;
-
-          const checkBtn = document.createElement('button');
-          checkBtn.className = `px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 active:scale-95 ${
-            match.completed
-              ? 'bg-teal-600 text-white border-teal-500 font-bold shadow-sm'
-              : 'bg-slate-950 text-slate-300 border-slate-800 hover:text-white hover:border-slate-700'
-          }`;
-          
-          checkBtn.onclick = () => toggleGameCheck(match.id);
-          checkBtn.innerHTML = `
-            <span class="w-3.5 h-3.5 rounded flex items-center justify-center border ${
-              match.completed ? 'bg-white border-white text-teal-800' : 'border-slate-600'
-            }">
-              ${match.completed ? `
-                <svg class="w-2.5 h-2.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                </svg>
-              ` : ''}
-            </span>
-            <span>${match.completed ? 'Played' : 'Done'}</span>
-          `;
-
-          card.appendChild(checkBtn);
-          gamesGrid.appendChild(card);
-        });
-
-        roundBlock.appendChild(gamesGrid);
-        container.appendChild(roundBlock);
+      state.rounds.forEach((round, rIdx) => {
+        const isActive = rIdx === state.activeRoundIndex;
+        const tabBtn = document.createElement('button');
+        tabBtn.type = 'button';
+        tabBtn.className = `px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap transition-all border ${
+          isActive 
+            ? 'bg-teal-500/20 text-teal-200 border-teal-500/50 shadow-glow-cyan' 
+            : 'bg-pitch-900 text-slate-400 border-slate-800 hover:text-slate-200 hover:border-slate-700'
+        }`;
+        const roundDone = round.matches.every(m => m.completed);
+        tabBtn.innerHTML = `Round ${round.roundNumber} ${roundDone ? '✓' : ''}`;
+        tabBtn.onclick = () => {
+          state.activeRoundIndex = rIdx;
+          renderCarouselFixtures();
+        };
+        tabsContainer.appendChild(tabBtn);
       });
+
+      const activeRound = state.rounds[state.activeRoundIndex];
+      const activeBlock = document.createElement('div');
+      activeBlock.className = 'space-y-4';
+
+      const roundHeader = document.createElement('div');
+      roundHeader.className = 'flex flex-wrap items-center justify-between gap-2 px-1 pt-1';
+      roundHeader.innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider text-teal-300 bg-slate-900 border border-slate-800 px-2.5 py-0.5 rounded-md font-mono">
+            Active: Round ${activeRound.roundNumber}
+          </span>
+          <span class="text-xs text-slate-400 font-mono">${activeRound.matches.length} Matches</span>
+        </div>
+        ${activeRound.byeTeamNumber ? `
+          <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium bg-amber-500/10 text-amber-300 border border-amber-500/25">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>Sitting out: Team ${activeRound.byeTeamNumber}</span>
+          </div>
+        ` : ''}
+      `;
+      activeBlock.appendChild(roundHeader);
+
+      const gamesGrid = document.createElement('div');
+      gamesGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
+
+      activeRound.matches.forEach((match) => {
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
+          match.completed 
+            ? 'bg-teal-950/30 border-teal-500/40 shadow-sm' 
+            : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+        }`;
+
+        const isTeamABibs = match.bibTeamNumber === match.teamANumber;
+        const isTeamBBibs = match.bibTeamNumber === match.teamBNumber;
+
+        const bibIcon = `
+          <span class="inline-flex items-center justify-center p-1 rounded bg-amber-400/20 text-amber-300 text-[10px] border border-amber-400/30 shrink-0 ml-1" title="Wearing Bibs">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+              <path d="M16 2l4 5-3 3v12H7V10L4 7l4-5h2.5a4 4 0 007 0H16z"/>
+            </svg>
+          </span>
+        `;
+
+        card.innerHTML = `
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="px-2 py-0.5 rounded text-[11px] font-mono font-bold ${match.completed ? 'bg-teal-500/20 text-teal-300' : 'bg-slate-900 text-slate-400'} border border-slate-800 shrink-0">
+              Match ${match.gameNumber}
+            </span>
+            <div class="flex items-center flex-wrap gap-2 text-xs font-bold">
+              <span class="inline-flex items-center ${isTeamABibs ? 'text-amber-300' : (match.completed ? 'text-teal-200' : 'text-white')}">
+                <span>Team ${match.teamANumber}</span>
+                ${isTeamABibs ? bibIcon : ''}
+              </span>
+              <span class="text-[10px] font-mono text-slate-500">vs</span>
+              <span class="inline-flex items-center ${isTeamBBibs ? 'text-amber-300' : (match.completed ? 'text-teal-200' : 'text-white')}">
+                <span>Team ${match.teamBNumber}</span>
+                ${isTeamBBibs ? bibIcon : ''}
+              </span>
+            </div>
+          </div>
+        `;
+
+        const checkBtn = document.createElement('button');
+        checkBtn.type = 'button';
+        checkBtn.className = `px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition shrink-0 active:scale-95 ${
+          match.completed
+            ? 'bg-teal-600 text-white border-teal-500 font-bold shadow-sm'
+            : 'bg-slate-950 text-slate-300 border-slate-800 hover:text-white hover:border-slate-700'
+        }`;
+        
+        checkBtn.onclick = () => toggleGameCheck(match.id);
+        checkBtn.innerHTML = `
+          <span class="w-3.5 h-3.5 rounded flex items-center justify-center border ${
+            match.completed ? 'bg-white border-white text-teal-800' : 'border-slate-600'
+          }">
+            ${match.completed ? `
+              <svg class="w-2.5 h-2.5 stroke-[3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+              </svg>
+            ` : ''}
+          </span>
+          <span>${match.completed ? 'Played' : 'Done'}</span>
+        `;
+
+        card.appendChild(checkBtn);
+        gamesGrid.appendChild(card);
+      });
+
+      activeBlock.appendChild(gamesGrid);
+      viewContainer.appendChild(activeBlock);
     }
 
     function toggleGameCheck(matchId) {
@@ -1269,7 +1345,7 @@
         const found = round.matches.find(m => m.id === matchId);
         if (found) {
           found.completed = !found.completed;
-          renderBottomMatchups();
+          renderCarouselFixtures();
           showToast(
             found.completed ? `Match ${found.gameNumber} completed` : `Match ${found.gameNumber} marked active`, 
             'info'
@@ -1325,16 +1401,14 @@
         return;
       }
 
-      // Transfer the player directly to the target team
       const [movedPlayer] = state.teams[sourceTeamIndex].players.splice(sourcePlayerIndex, 1);
       state.teams[targetTeamIndex].players.push(movedPlayer);
 
-      // Keep both teams sorted alphabetically
       state.teams[sourceTeamIndex].players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
       state.teams[targetTeamIndex].players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 
       state.draggedItem = null;
-      syncRosterTextarea();
+      syncTagsFromTeams();
       renderTeams();
     }
 
@@ -1344,7 +1418,7 @@
 
       targetTeamIndexForAdd = teamIndex;
       document.getElementById('addPlayerModalTitle').textContent = `Add Player to Team ${team.teamNumber}`;
-      document.getElementById('addPlayerModalSubtitle').textContent = `Current squad: ${team.players.length} ${team.players.length === 1 ? 'member' : 'members'}`;
+      document.getElementById('addPlayerModalSubtitle').textContent = `Current squad: ${team.players.length} members`;
       const input = document.getElementById('newPlayerNameInput');
       input.value = '';
       const modal = document.getElementById('addPlayerModal');
@@ -1358,9 +1432,6 @@
       targetTeamIndexForAdd = null;
     }
 
-    /**
-     * Submits a manually added player with NO 6-player cap restriction.
-     */
     function submitAddPlayer() {
       if (targetTeamIndexForAdd === null) return;
       const team = state.teams[targetTeamIndexForAdd];
@@ -1374,23 +1445,19 @@
         return;
       }
 
-      // Check if player name already exists anywhere in current teams
       const exists = state.teams.some(t => t.players.some(p => p.toLowerCase() === name.toLowerCase()));
       if (exists) {
-        showToast(`"${name}" is already assigned to a team`, 'error');
+        showToast(`"${name}" is already in a team`, 'error');
         return;
       }
 
-      // Add to team without restricting to 6
       team.players.push(name);
       team.players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 
-      // Synchronize player input textarea
-      syncRosterTextarea();
-
+      syncTagsFromTeams();
       renderTeams();
       closeAddPlayerModal();
-      showToast(`Added "${name}" to Team ${team.teamNumber} (${team.players.length} members)`, 'success');
+      showToast(`Added "${name}" to Team ${team.teamNumber}`, 'success');
     }
 
     document.addEventListener('keydown', (e) => {
