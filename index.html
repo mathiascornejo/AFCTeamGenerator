@@ -4,12 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AFC Team Generator</title>
+  <meta name="description" content="Paste a roster, choose a squad size, and get squads, a round-robin fixture list and bib assignments.">
+  <meta property="og:title" content="AFC Team Generator"><meta property="og:description" content="Squads, fixtures and bibs from a pasted roster.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23060E14'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%232DD4BF' stroke-width='7'/%3E%3Cpath d='M50 36l13 9-5 15H42l-5-15z' fill='%232DD4BF'/%3E%3C/svg%3E">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts: Playfair Display, Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   
   <script>
     tailwind.config = {
@@ -17,9 +20,9 @@
       theme: {
         extend: {
           fontFamily: {
-            serif: ['"Playfair Display"', 'Georgia', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['Geist', 'system-ui', 'sans-serif'],
+            mono: ['"Geist Mono"', 'ui-monospace', 'monospace'],
           },
           colors: {
             pitch: {
@@ -57,8 +60,8 @@
         radial-gradient(circle at 50% 0%, rgba(0, 93, 99, 0.24) 0%, transparent 60%),
         radial-gradient(circle at 100% 25%, rgba(19, 139, 136, 0.09) 0%, transparent 45%),
         radial-gradient(circle at 0% 80%, rgba(30, 201, 184, 0.06) 0%, transparent 45%);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      min-height: 100vh;
+      font-family: 'Geist', system-ui, sans-serif;
+      min-height: 100dvh;
       color: #E2E8F0;
     }
 
@@ -116,7 +119,7 @@
       height: 320px;
       opacity: 0.16;
       background-image: url("data:image/svg+xml,%3Csvg width='56' height='97' viewBox='0 0 56 97' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%232DD4BF' stroke-width='1.2'/%3E%3C/svg%3E");
-      pointer-events-none;
+      pointer-events: none;
       mask-image: radial-gradient(circle at top right, black 30%, transparent 80%);
       -webkit-mask-image: radial-gradient(circle at top right, black 30%, transparent 80%);
     }
@@ -128,7 +131,7 @@
       height: 340px;
       opacity: 0.12;
       background-image: url("data:image/svg+xml,%3Csvg width='56' height='97' viewBox='0 0 56 97' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%2314B8A6' stroke-width='1.2'/%3E%3C/svg%3E");
-      pointer-events-none;
+      pointer-events: none;
       mask-image: radial-gradient(circle at bottom left, black 20%, transparent 80%);
       -webkit-mask-image: radial-gradient(circle at bottom left, black 20%, transparent 80%);
     }
@@ -201,6 +204,31 @@
       0% { opacity: 0; transform: scale(0.85); }
       100% { opacity: 1; transform: scale(1); }
     }
+  
+    html { scroll-behavior: smooth; }
+    h1,h2,h3,p { text-wrap: balance; }
+    p { text-wrap: pretty; }
+    .font-mono, .tabular { font-variant-numeric: tabular-nums; }
+    :focus-visible { outline: 2px solid #5EEAD4; outline-offset: 2px; }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 60; background: #5EEAD4; color: #060E14; padding: .5rem .9rem; border-radius: .5rem; font-weight: 600; font-size: .8rem; transition: top .2s; }
+    .skip-link:focus { top: 1rem; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    .word { display: inline-block; opacity: 0; transform: translateY(.55em); animation: rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay: calc(var(--i) * 80ms + 100ms); }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+    .fade-in { opacity: 0; animation: rise .9s cubic-bezier(.16,1,.3,1) .65s forwards; }
+    .team-card-dark { transform-style: flat; }
+    .dark-panel-card, .team-card-dark, .fixtures-glass { position: relative; }
+    .dark-panel-card::after, .team-card-dark::after, .fixtures-glass::after { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0; transition: opacity .3s;
+      background: radial-gradient(240px circle at var(--mx,50%) var(--my,0%), rgba(94,234,212,.6), transparent 65%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+    .dark-panel-card:hover::after, .team-card-dark:hover::after, .fixtures-glass:hover::after { opacity: 1; }
+    @media (prefers-reduced-motion: reduce) { .word, .fade-in { animation: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+  
+    .team-dropzone[data-locked="true"] button[onclick^="openAddPlayerModal"],
+    .team-dropzone[data-locked="true"] button[onclick^="removeTeam"],
+    .team-dropzone[data-locked="true"] button[onclick*="removePlayerFromTeam"] { opacity: .25; pointer-events: none; }
+    .team-dropzone[data-locked="true"] .player-card { cursor: default; }
   </style>
 </head>
 
@@ -209,31 +237,23 @@
   <div class="hex-pattern-right"></div>
   <div class="hex-pattern-left"></div>
 
-  <!-- Header Area -->
-  <header class="pt-8 sm:pt-12 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 border-b border-pitch-800/50 relative z-20">
-    <div class="max-w-5xl mx-auto text-center flex flex-col items-center">
-      
-      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-pitch-900/90 border border-pitch-700/70 shadow-lg mb-5 backdrop-blur-md">
-        <div class="w-5 h-5 rounded-full bg-slate-900 border border-teal-500/40 flex items-center justify-center text-teal-300">
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 2c1.78 0 3.42.59 4.75 1.58L14.7 7.72A5.96 5.96 0 0012 7c-1.02 0-1.96.26-2.79.71L7.15 5.57A7.957 7.957 0 0112 4zm-6.19 2.94l2.09 2.16C7.34 9.87 7 10.89 7 12c0 .41.05.81.13 1.2L4.35 14.5A7.973 7.973 0 014 12c0-1.87.64-3.59 1.81-5.06zM12 9c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 11c-1.89 0-3.62-.66-4.99-1.75l2.12-2.14c.85.55 1.87.89 2.87.89 1.05 0 2.02-.32 2.84-.87l2.11 2.14A7.95 7.95 0 0112 20zm6.19-2.94l-2.09-2.15c.57-.77.9-1.72.9-2.91 0-.44-.05-.86-.15-1.26l2.8-1.28c.23.77.35 1.59.35 2.44 0 1.94-.69 3.72-1.81 5.16z"/>
-          </svg>
-        </div>
-        <span class="text-xs font-semibold text-slate-200 tracking-wide">AFC Team Generator</span>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="relative z-20 px-4 sm:px-6 lg:px-8 pt-10 sm:pt-20 pb-12 sm:pb-20">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+      <div class="lg:col-span-8">
+        <p class="font-mono text-xs text-teal-300/80 mb-6 flex items-center gap-3 fade-in" style="animation-delay:0s"><span class="w-8 h-px bg-teal-400/60"></span>afc / team generator</p>
+        <h1 class="font-serif text-[2.9rem] sm:text-7xl lg:text-[5.6rem] leading-[.95] tracking-[-0.03em] text-white"><span class="word" style="--i:0">Split</span> <span class="word" style="--i:1">your</span> <span class="word" style="--i:2">roster</span> <span class="word" style="--i:3">into</span> <span class="word shiny-text italic pr-2" style="--i:4">even</span> <span class="word shiny-text italic pr-2" style="--i:5">squads.</span> </h1>
+        <p class="mt-8 text-slate-400 text-base max-w-[52ch] leading-relaxed fade-in">Paste a list of names and pick a squad size. The generator forms the squads, schedules every team against every other team, and assigns bibs as evenly as the schedule allows.</p>
       </div>
-
-      <h1 class="text-3xl sm:text-5xl md:text-6xl font-serif font-bold tracking-tight leading-tight shiny-text">
-        Organize Teams Effortlessly.
-      </h1>
-      
-      <p class="mt-3.5 sm:mt-4 text-xs sm:text-base text-slate-400 max-w-2xl font-normal leading-relaxed">
-        Input names and instantly generate balanced squads with round-robin fixtures and equal bib distribution.
-      </p>
-
+      <dl class="lg:col-span-4 grid grid-cols-3 lg:grid-cols-1 gap-6 lg:border-l lg:border-slate-800 lg:pl-8 fade-in">
+        <div><dt class="font-mono text-[11px] text-slate-500">minimum players</dt><dd class="font-serif text-4xl text-white">2</dd></div>
+        <div><dt class="font-mono text-[11px] text-slate-500">squad size</dt><dd class="font-serif text-4xl text-white">2–12</dd></div>
+        <div><dt class="font-mono text-[11px] text-slate-500">bibs</dt><dd class="font-serif text-4xl text-amber-300 italic">shared</dd></div>
+      </dl>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full z-10">
+  <main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full z-10">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
       
       <!-- LEFT COLUMN: Tag Roster Input Panel -->
@@ -242,7 +262,7 @@
         <div id="rosterCardPanel" class="dark-panel-card roster-card rounded-2xl p-5 sm:p-6 flex flex-col text-slate-200 transition-all">
           <div class="flex items-center justify-between mb-3">
             <label for="tagInputField" class="text-sm font-bold text-white flex items-center gap-2">
-              <span>Roster Tags</span>
+              <span>Roster</span>
             </label>
             <div class="flex items-center gap-2">
               <button 
@@ -268,13 +288,25 @@
             <input
               type="text"
               id="tagInputField"
-              placeholder="Type player & press Enter, or paste list..."
+              placeholder="Add a name, or paste a list"
               class="flex-1 min-w-[120px] bg-transparent text-xs sm:text-sm font-mono text-slate-100 placeholder-slate-500 focus:outline-none py-1 px-1"
               onkeydown="handleTagKeydown(event)"
               onpaste="handleTagPaste(event)"
             />
           </div>
-          <span class="text-[11px] text-slate-500 mt-2 font-mono">Tip: Separate with Enter, comma, or paste your entire roster directly.</span>
+          <span class="text-[11px] text-slate-500 mt-2 font-mono">Press Enter or comma after each name, or paste a full list.</span>
+
+          <div class="mt-4 flex items-center justify-between gap-4">
+            <div>
+              <span id="sizeLabel" class="text-sm font-medium text-white">Players per squad</span>
+              <p class="text-xs text-slate-500 mt-0.5 max-w-[30ch]">Squads hold up to this many. Sizes differ by at most one.</p>
+            </div>
+            <div role="group" aria-labelledby="sizeLabel" class="flex items-center rounded-xl border border-slate-700/70 bg-pitch-950/80">
+              <button type="button" onclick="changeSquadSize(-1)" aria-label="Fewer players per squad" class="w-10 h-10 text-lg text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-l-xl transition active:scale-95">&minus;</button>
+              <output id="squadSizeValue" aria-live="polite" class="w-10 text-center font-mono text-base text-white">5</output>
+              <button type="button" onclick="changeSquadSize(1)" aria-label="More players per squad" class="w-10 h-10 text-lg text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-r-xl transition active:scale-95">+</button>
+            </div>
+          </div>
 
           <!-- Rule Validation Card -->
           <div id="ruleValidationCard" class="mt-4 p-3 rounded-xl bg-pitch-950/60 border border-slate-800 flex items-start gap-3">
@@ -285,7 +317,7 @@
             </div>
             <div class="min-w-0 flex-1">
               <p id="ruleText" class="text-xs text-slate-300 leading-relaxed">
-                Automatic generation requires at least <strong class="text-teal-300 font-semibold">20 players</strong> (5–6 players per team). You can also create teams manually!
+                Add at least 2 players, choose a squad size, then generate. You can also build teams by hand.
               </p>
             </div>
           </div>
@@ -297,9 +329,9 @@
               type="button"
               onclick="generateTeams()"
               disabled
-              class="shimmer-btn w-full py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm tracking-wider uppercase text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] shadow-md shadow-teal-950/40 border border-teal-500/20 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
+              class="shimmer-btn w-full py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm tracking-tight text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] shadow-md shadow-teal-950/40 border border-teal-500/20 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
             >
-              <span>Auto-Generate</span>
+              <span>Auto-generate</span>
               <svg class="w-4 h-4 text-teal-200 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
               </svg>
@@ -315,7 +347,7 @@
         <div class="team-card-dark rounded-2xl px-5 py-4 border border-slate-800 flex items-center justify-between gap-4 flex-wrap">
           <div class="flex items-center gap-3">
             <h2 class="text-sm sm:text-base font-bold text-white tracking-wide flex items-center gap-2.5">
-              <span>Formed Teams</span>
+              <span>Teams</span>
               <span id="teamCountBadge" class="hidden px-2.5 py-0.5 text-xs font-mono font-semibold rounded-full bg-teal-500/10 text-teal-300 border border-teal-500/30">
                 0 Teams
               </span>
@@ -332,7 +364,7 @@
               <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
               </svg>
-              <span>New Team</span>
+              <span>New team</span>
             </button>
             <button 
               type="button"
@@ -361,9 +393,9 @@
               <line x1="9.5" y1="10" x2="4.5" y2="8.5"></line>
             </svg>
           </div>
-          <h3 class="text-base sm:text-lg font-bold text-white mb-1.5 font-serif tracking-tight">No Teams Formed Yet</h3>
+          <h3 class="text-3xl font-normal text-white mb-1.5 font-serif">No teams yet</h3>
           <p class="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed mb-5">
-            Auto-generate balanced squads using the roster tags on the left, or manually create your first team right now.
+            Add names on the left and press auto-generate, or start an empty team and fill it by hand.
           </p>
           <button
             type="button"
@@ -373,7 +405,7 @@
             <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
             </svg>
-            <span>Create First Team</span>
+            <span>Create first team</span>
           </button>
         </div>
 
@@ -390,7 +422,7 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-sm sm:text-base font-bold text-white tracking-wide">Tournament Match Fixtures</h3>
+                <h3 class="text-sm sm:text-base font-bold text-white tracking-wide">Fixtures</h3>
               </div>
             </div>
             
@@ -399,7 +431,7 @@
                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M16 2l4 5-3 3v12H7V10L4 7l4-5h2.5a4 4 0 007 0H16z"/>
                 </svg>
-                <span>Balanced Bibs</span>
+                <span>Bibs rotate</span>
               </span>
               <span id="matchupSummaryBadge" class="text-xs font-mono font-bold px-3 py-1 rounded-lg bg-pitch-950 text-teal-300 border border-slate-800 shadow-sm shrink-0">
                 0 / 0 Done
@@ -419,6 +451,10 @@
     </div>
   </main>
 
+  <footer class="relative z-20 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-10 pb-12 mt-8 border-t border-slate-800/70 flex flex-wrap justify-between gap-3 font-mono text-[11px] text-slate-500">
+    <span>afc team generator</span><span>Runs in your browser. Nothing is saved or sent.</span>
+  </footer>
+
   <!-- Add Player Modal -->
   <div id="addPlayerModal" onclick="if(event.target === this) closeAddPlayerModal()" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm transition-all duration-200">
     <div class="dark-panel-card w-full max-w-md rounded-2xl p-5 sm:p-6 border border-slate-700/80 shadow-2xl relative" onclick="event.stopPropagation()">
@@ -430,8 +466,8 @@
             </svg>
           </div>
           <div>
-            <h3 id="addPlayerModalTitle" class="text-sm font-bold text-white tracking-wide">Add Player to Team</h3>
-            <p id="addPlayerModalSubtitle" class="text-xs text-slate-400">Enter player name to manually insert into roster</p>
+            <h3 id="addPlayerModalTitle" class="text-sm font-bold text-white tracking-wide">Add player to team</h3>
+            <p id="addPlayerModalSubtitle" class="text-xs text-slate-400">Type the player's name.</p>
           </div>
         </div>
         <button type="button" onclick="closeAddPlayerModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
@@ -466,7 +502,7 @@
             <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
             </svg>
-            <span>Add Player</span>
+            <span>Add player</span>
           </button>
         </div>
       </form>
@@ -476,7 +512,7 @@
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
-    const TEAM_THEMES = [
+    const TEAM_THEMES_RAW = [
       { 
         name: 'Cyan', 
         border: 'border-cyan-400/50', 
@@ -535,7 +571,9 @@
       }
     ];
 
+    const TEAM_THEMES = Array(8).fill(TEAM_THEMES_RAW[0]);
     let state = {
+      squadSize: 5,
       playerTags: [],
       teams: [],
       rounds: [],
@@ -593,10 +631,10 @@
 
       if (state.playerTags.length > 0) {
         clearBtn.classList.remove('hidden');
-        input.placeholder = "Add name...";
+        input.placeholder = "Add another name";
       } else {
         clearBtn.classList.add('hidden');
-        input.placeholder = "Type player & press Enter, or paste list...";
+        input.placeholder = "Add a name, or paste a list";
       }
 
       state.playerTags.forEach((name, idx) => {
@@ -646,44 +684,21 @@
       }
     }
 
-    function calculateTeamDistribution(totalPlayers) {
-      if (totalPlayers < 20) {
-        return {
-          valid: false,
-          totalPlayers,
-          reason: `Auto-balancing requires at least 20 players (${20 - totalPlayers} more needed). You can also add teams manually!`
-        };
+    function calculateTeamDistribution(totalPlayers, minTeams = 2) {
+      if (totalPlayers < minTeams) {
+        return { valid: false, totalPlayers, reason: minTeams === 1 ? 'No unlocked players left to place.' : 'Add at least 2 players to form squads.' };
       }
+      const totalTeams = Math.max(minTeams, Math.ceil(totalPlayers / state.squadSize));
+      const base = Math.floor(totalPlayers / totalTeams);
+      const extra = totalPlayers % totalTeams;
+      const teamSizes = Array.from({ length: totalTeams }, (_, i) => base + (i < extra ? 1 : 0));
+      return { valid: true, totalPlayers, totalTeams, teamSizes };
+    }
 
-      const minTeamsByCapacity = Math.ceil(totalPlayers / 6);
-      const totalTeams = Math.max(4, minTeamsByCapacity);
-
-      const minPossiblePlayers = totalTeams * 5;
-      const maxPossiblePlayers = totalTeams * 6;
-
-      if (totalPlayers < minPossiblePlayers || totalPlayers > maxPossiblePlayers) {
-        return {
-          valid: false,
-          totalPlayers,
-          reason: `Cannot partition ${totalPlayers} players into 5-6 player teams with at least 4 teams. Add or remove players, or build manually.`
-        };
-      }
-
-      const count6 = totalPlayers - (5 * totalTeams);
-      const count5 = (6 * totalTeams) - totalPlayers;
-
-      const teamSizes = [];
-      for (let i = 0; i < count6; i++) teamSizes.push(6);
-      for (let i = 0; i < count5; i++) teamSizes.push(5);
-
-      return {
-        valid: true,
-        totalPlayers,
-        totalTeams,
-        count6,
-        count5,
-        teamSizes
-      };
+    function changeSquadSize(delta) {
+      state.squadSize = Math.min(12, Math.max(2, state.squadSize + delta));
+      document.getElementById('squadSizeValue').textContent = state.squadSize;
+      updateValidationUI();
     }
 
     function updateValidationUI() {
@@ -698,7 +713,7 @@
 
       if (count === 0) {
         counterEl.className = 'text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-pitch-950 border border-slate-700/60 text-slate-400';
-        ruleText.innerHTML = `Automatic generation requires at least <strong class="text-teal-300 font-semibold">20 players</strong> (5–6 players per team). You can also create teams manually!`;
+        ruleText.innerHTML = `Add at least 2 players, choose a squad size, then generate. You can also build teams by hand.`;
         ruleText.className = 'text-xs text-slate-300 leading-relaxed';
         ruleIcon.className = 'mt-0.5 shrink-0 text-teal-400';
         generateBtn.disabled = true;
@@ -706,7 +721,8 @@
         return;
       }
 
-      const dist = calculateTeamDistribution(count);
+      const info = poolInfo();
+      const dist = calculateTeamDistribution(info.pool.length, info.locked.length ? 1 : 2);
 
       if (!dist.valid) {
         counterEl.className = 'text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-amber-950/60 text-amber-300 border border-amber-600/50';
@@ -717,11 +733,10 @@
         panel.classList.remove('active-ready');
       } else {
         counterEl.className = 'text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-teal-950/70 text-teal-300 border border-teal-500/50';
-        const parts = [];
-        if (dist.count6 > 0) parts.push(`${dist.count6} ${dist.count6 === 1 ? 'team' : 'teams'} of 6`);
-        if (dist.count5 > 0) parts.push(`${dist.count5} ${dist.count5 === 1 ? 'team' : 'teams'} of 5`);
-        
-        ruleText.innerHTML = `Ready to balance: <strong class="text-white font-bold">${dist.totalTeams} Teams</strong> (${parts.join(', ')}).`;
+        const hi = Math.max(...dist.teamSizes), lo = Math.min(...dist.teamSizes);
+        const nHi = dist.teamSizes.filter(x => x === hi).length;
+        const parts = hi === lo ? [`all of ${hi}`] : [`${nHi} of ${hi}`, `${dist.totalTeams - nHi} of ${lo}`];
+        ruleText.innerHTML = `<strong class="text-white font-bold">${dist.totalTeams} teams</strong>, ${parts.join(' and ')} players.${info.locked.length ? ` ${info.locked.length} locked ${info.locked.length === 1 ? 'team stays' : 'teams stay'} as is.` : ''}`;
         ruleText.className = 'text-xs text-teal-200 leading-relaxed font-sans';
         ruleIcon.className = 'mt-0.5 shrink-0 text-teal-400';
         generateBtn.disabled = false;
@@ -889,13 +904,14 @@
         input.value = '';
       }
 
-      const dist = calculateTeamDistribution(state.playerTags.length);
+      const info = poolInfo();
+      const dist = calculateTeamDistribution(info.pool.length, info.locked.length ? 1 : 2);
       if (!dist.valid) {
         showToast(dist.reason, 'error');
         return;
       }
 
-      const shuffledPlayers = shuffleArray(state.playerTags);
+      const shuffledPlayers = shuffleArray(info.pool);
       let playerIndex = 0;
       const newTeams = [];
 
@@ -910,46 +926,50 @@
 
         newTeams.push({
           id: `team-${t + 1}-${Date.now()}`,
-          teamNumber: t + 1,
+          teamNumber: info.locked.length + t + 1,
           players: teamMembers
         });
       }
 
-      state.teams = newTeams;
-      state.rounds = buildRoundRobinSchedule(newTeams);
+      state.teams = [...info.locked, ...newTeams];
+      state.teams.forEach((t, i) => { t.teamNumber = i + 1; });
+      state.rounds = buildRoundRobinSchedule(state.teams);
       state.activeRoundIndex = 0;
 
       renderTeams();
       renderCarouselFixtures();
-      showToast(`Generated ${newTeams.length} teams with balanced schedule!`, 'success');
+      showToast(`Generated ${newTeams.length} teams with a balanced schedule.`, 'success');
+    }
+
+    function toggleTeamLock(teamIndex) {
+      const team = state.teams[teamIndex];
+      if (!team) return;
+      team.locked = !team.locked;
+      renderTeams();
+      updateValidationUI();
+      showToast(`Team ${team.teamNumber} ${team.locked ? 'locked' : 'unlocked'}`, 'info');
+    }
+
+    function poolInfo() {
+      const locked = (state.teams || []).filter(t => t.locked);
+      const names = new Set(locked.flatMap(t => t.players.map(p => p.toLowerCase())));
+      return { locked, pool: state.playerTags.filter(p => !names.has(p.toLowerCase())) };
     }
 
     function reshuffleCurrentTeams() {
-      const allCurrent = [];
-      state.teams.forEach(t => t.players.forEach(p => allCurrent.push(p)));
-
-      if (allCurrent.length < 2) {
-        showToast('Add more players before reshuffling', 'error');
+      const free = state.teams.filter(t => !t.locked);
+      const pool = free.flatMap(t => t.players);
+      if (free.length < 2 || pool.length < 2) {
+        showToast('Reshuffling needs at least 2 unlocked teams with players.', 'error');
         return;
       }
-
-      const shuffled = shuffleArray(allCurrent);
-      const teamCount = state.teams.length;
-      state.teams.forEach(t => { t.players = []; });
-      
-      shuffled.forEach((player, idx) => {
-        state.teams[idx % teamCount].players.push(player);
-      });
-
-      state.teams.forEach(t => {
-        t.players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-      });
-
-      state.playerTags = [...allCurrent];
-      renderPlayerTags();
-      updateValidationUI();
+      free.forEach(t => { t.players = []; });
+      shuffleArray(pool).forEach((player, idx) => free[idx % free.length].players.push(player));
+      free.forEach(t => t.players.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' })));
+      syncTagsFromTeams();
       renderTeams();
-      showToast(`Reshuffled across ${teamCount} squads!`, 'success');
+      const kept = state.teams.length - free.length;
+      showToast(`Reshuffled ${free.length} teams${kept ? `, ${kept} locked kept as is` : ''}.`, 'success');
     }
 
     function getInitials(name) {
@@ -983,6 +1003,7 @@
     }
 
     function removeTeam(teamIndex) {
+      if (state.teams[teamIndex]?.locked) return showToast("Unlock the team before deleting it.", "info");
       if (!state.teams || !state.teams[teamIndex]) return;
       const removed = state.teams.splice(teamIndex, 1)[0];
       state.teams.forEach((t, i) => { t.teamNumber = i + 1; });
@@ -1000,6 +1021,7 @@
     }
 
     function removePlayerFromTeam(teamIndex, playerIndex) {
+      if (state.teams[teamIndex]?.locked) return showToast("Unlock the team before removing players.", "info");
       const team = state.teams[teamIndex];
       if (!team) return;
       const [removed] = team.players.splice(playerIndex, 1);
@@ -1017,6 +1039,7 @@
     }
 
     function applyTiltEffect(card) {
+      return; // tilt removed: it fought with drag-and-drop
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
@@ -1071,8 +1094,9 @@
         wrapper.className = 'tilt-wrapper';
 
         const teamCard = document.createElement('div');
-        teamCard.className = `team-dropzone team-card-dark rounded-2xl overflow-hidden border ${theme.border} ${theme.glow} flex flex-col justify-between`;
+        teamCard.className = `team-dropzone team-card-dark rounded-2xl overflow-hidden border ${team.locked ? "ring-1 ring-teal-300/40" : ""} ${theme.border} ${theme.glow} flex flex-col justify-between`;
         teamCard.dataset.teamIndex = teamIndex;
+        teamCard.dataset.locked = !!team.locked;
 
         applyTiltEffect(teamCard);
 
@@ -1084,14 +1108,19 @@
         header.className = 'px-4 py-3 bg-slate-900/60 border-b border-slate-800/80 flex items-center justify-between';
         header.innerHTML = `
           <div class="flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg ${theme.iconBg} flex items-center justify-center font-bold text-xs border">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-            </span>
+            <span class="font-serif italic text-3xl leading-none text-teal-300 tabular w-8">${String(team.teamNumber).padStart(2,"0")}</span>
             <span class="font-bold text-sm tracking-wide text-white">Team ${team.teamNumber}</span>
           </div>
           <div class="flex items-center gap-1.5">
+            <button type="button" onclick="toggleTeamLock(${teamIndex})" aria-pressed="${!!team.locked}"
+              title="${team.locked ? 'Unlock team' : 'Lock team so reshuffles skip it'}"
+              class="p-1 rounded-lg border transition-all active:scale-95 ${team.locked ? 'text-teal-200 bg-teal-500/20 border-teal-400/50' : 'text-slate-500 hover:text-teal-300 border-transparent hover:border-teal-500/30'}">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="${team.locked
+                  ? 'M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'
+                  : 'M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z'}"/>
+              </svg>
+            </button>
             <button 
               type="button"
               onclick="openAddPlayerModal(${teamIndex})" 
@@ -1128,7 +1157,7 @@
                 onclick="openAddPlayerModal(${teamIndex})" 
                 class="mt-1 text-[11px] text-teal-400 hover:underline font-semibold"
               >
-                + Add Member
+                + Add a player
               </button>
             </div>
           `;
@@ -1136,7 +1165,7 @@
           team.players.forEach((playerName, playerIndex) => {
             const item = document.createElement('div');
             item.className = 'player-card group p-2 rounded-xl bg-slate-900/40 border border-slate-800/60 hover:border-slate-700 flex items-center justify-between cursor-grab active:cursor-grabbing select-none';
-            item.draggable = true;
+            item.draggable = !team.locked;
             item.dataset.teamIndex = teamIndex;
             item.dataset.playerIndex = playerIndex;
 
@@ -1175,21 +1204,21 @@
         const footer = document.createElement('div');
         const size = team.players.length;
         let badgeColor = 'text-slate-300';
-        let badgeLabel = `${size} Members`;
-        if (size > 6) {
+        let badgeLabel = `${size} members`;
+        if (size > state.squadSize) {
           badgeColor = 'text-cyan-300';
-          badgeLabel = `${size} Members (Extended)`;
-        } else if (size === 6) {
+          badgeLabel = `${size} / ${state.squadSize} members`;
+        } else if (size === state.squadSize) {
           badgeColor = 'text-teal-400';
-          badgeLabel = `${size} / 6 Members`;
-        } else if (size === 5) {
+          badgeLabel = `${size} / ${state.squadSize} members`;
+        } else if (size < state.squadSize) {
           badgeColor = 'text-slate-300';
-          badgeLabel = `${size} / 6 Members`;
+          badgeLabel = `${size} / ${state.squadSize} members`;
         }
 
         footer.className = 'px-4 py-2 bg-slate-950/60 border-t border-slate-800/60 flex items-center justify-between text-[11px]';
         footer.innerHTML = `
-          <span class="text-slate-400 font-mono">Squad</span>
+          <span class="text-slate-400 font-mono">${team.locked ? "Locked" : "Squad"}</span>
           <span class="font-mono font-semibold ${badgeColor}">
             ${badgeLabel}
           </span>
@@ -1212,7 +1241,7 @@
       viewContainer.innerHTML = '';
 
       if (!state.rounds || state.rounds.length === 0) {
-        viewContainer.innerHTML = '<p class="text-xs text-slate-400">At least 2 teams are required to generate tournament fixtures.</p>';
+        viewContainer.innerHTML = '<p class="text-xs text-slate-400">Fixtures need at least 2 teams.</p>';
         badge.textContent = '0 / 0 Done';
         return;
       }
@@ -1379,7 +1408,7 @@
     function handleDragOver(e) {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
-      this.classList.add('drag-target-active');
+      if (!state.teams[parseInt(this.dataset.teamIndex)].locked) this.classList.add('drag-target-active');
     }
 
     function handleDragLeave() {
@@ -1395,6 +1424,12 @@
       const targetTeamIndex = parseInt(this.dataset.teamIndex);
       const sourceTeamIndex = state.draggedItem.teamIndex;
       const sourcePlayerIndex = state.draggedItem.playerIndex;
+
+      if (state.teams[targetTeamIndex].locked || state.teams[sourceTeamIndex].locked) {
+        state.draggedItem = null;
+        showToast("Locked teams can't change. Unlock the team first.", "info");
+        return;
+      }
 
       if (sourceTeamIndex === targetTeamIndex) {
         state.draggedItem = null;
@@ -1413,11 +1448,12 @@
     }
 
     function openAddPlayerModal(teamIndex) {
+      if (state.teams[teamIndex]?.locked) return showToast("Unlock the team before adding players.", "info");
       const team = state.teams[teamIndex];
       if (!team) return;
 
       targetTeamIndexForAdd = teamIndex;
-      document.getElementById('addPlayerModalTitle').textContent = `Add Player to Team ${team.teamNumber}`;
+      document.getElementById('addPlayerModalTitle').textContent = `Add player to team ${team.teamNumber}`;
       document.getElementById('addPlayerModalSubtitle').textContent = `Current squad: ${team.players.length} members`;
       const input = document.getElementById('newPlayerNameInput');
       input.value = '';
@@ -1441,7 +1477,7 @@
       const name = input.value.trim();
 
       if (!name) {
-        showToast('Please enter a player name', 'error');
+        showToast('Enter a player name.', 'error');
         return;
       }
 
@@ -1511,6 +1547,13 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
+  document.addEventListener('pointermove', e => {
+      const c = e.target.closest && e.target.closest('.dark-panel-card,.team-card-dark,.fixtures-glass');
+      if (!c) return;
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
   </script>
 </body>
 </html>
