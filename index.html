@@ -326,6 +326,10 @@
     .team-dropzone[data-locked="true"] button[onclick^="removeTeam"],
     .team-dropzone[data-locked="true"] button[onclick*="removePlayerFromTeam"] { opacity: .25; pointer-events: none; }
     .team-dropzone[data-locked="true"] .player-card { cursor: default; }
+    .smooth-tab-slider {
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1), width 0.38s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform, width;
+    }
   </style>
 </head>
 
@@ -351,31 +355,45 @@
   </header>
 
   <main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full z-10">
-    <!-- Division Selector Tabs -->
-    <div role="tablist" aria-label="Player division" class="mb-6 inline-flex items-center gap-2 p-1.5 rounded-2xl bg-pitch-900/90 border border-slate-800">
-      <button
-        type="button"
-        role="tab"
-        id="tab-beginners"
-        aria-selected="true"
-        onclick="switchTab('beginners')"
-        class="px-5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all border bg-teal-500/20 text-teal-200 border-teal-500/50 shadow-glow-cyan"
-      >
-        Beginners
-      </button>
-      <button
-        type="button"
-        role="tab"
-        id="tab-advanced"
-        aria-selected="false"
-        onclick="switchTab('advanced')"
-        class="px-5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all border bg-transparent text-slate-400 border-transparent hover:text-slate-200"
-      >
-        Advanced
-      </button>
+    <!-- Division Selector Smooth Tabs -->
+    <div
+      id="divisionTablist"
+      role="tablist"
+      aria-label="Player division"
+      class="relative mb-6 flex items-center justify-between gap-1 py-1 w-full max-w-[320px] bg-pitch-950/90 rounded-xl border border-slate-800 transition-all duration-200"
+    >
+      <!-- Sliding Background -->
+      <div
+        id="tabSlider"
+        class="smooth-tab-slider absolute z-[1] left-0 rounded-lg bg-teal-500 shadow-glow-cyan"
+        style="height: calc(100% - 8px); top: 4px;"
+      ></div>
+
+      <div class="relative z-[2] grid w-full grid-cols-2 gap-1">
+        <button
+          type="button"
+          role="tab"
+          id="tab-beginners"
+          aria-selected="true"
+          onclick="switchTab('beginners')"
+          class="relative flex items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 font-medium text-sm transition-all duration-300 focus-visible:outline-none truncate text-white"
+        >
+          Beginners
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-advanced"
+          aria-selected="false"
+          onclick="switchTab('advanced')"
+          class="relative flex items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 font-medium text-sm transition-all duration-300 focus-visible:outline-none truncate text-slate-400 hover:bg-white/5 hover:text-white"
+        >
+          Advanced
+        </button>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+    <div id="divisionContentGrid" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
       
       <!-- LEFT COLUMN: Tag Roster Input Panel -->
       <section class="lg:col-span-5 flex flex-col gap-5 lg:sticky lg:top-8">
@@ -712,8 +730,22 @@
 
     let targetTeamIndexForAdd = null;
 
+    function updateTabSlider() {
+      const container = document.getElementById('divisionTablist');
+      const selectedButton = document.getElementById(`tab-${activeTab}`);
+      const slider = document.getElementById('tabSlider');
+      if (!container || !selectedButton || !slider) return;
+      const rect = selectedButton.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      slider.style.width = `${Math.max(0, rect.width - 8)}px`;
+      slider.style.transform = `translateX(${rect.left - containerRect.left + 4}px)`;
+    }
+
     function switchTab(tab) {
       if (!instances[tab] || tab === activeTab) return;
+      const tabOrder = ['beginners', 'advanced'];
+      const direction = tabOrder.indexOf(tab) > tabOrder.indexOf(activeTab) ? 1 : -1;
+
       const input = document.getElementById('tagInputField');
       if (input) state.draftInput = input.value;
       closeAddPlayerModal();
@@ -722,17 +754,19 @@
       state = instances[tab];
       document.body.classList.toggle('theme-advanced', activeTab === 'advanced');
 
-      ['beginners', 'advanced'].forEach(key => {
+      tabOrder.forEach(key => {
         const btn = document.getElementById(`tab-${key}`);
         if (!btn) return;
         const isActive = key === activeTab;
         btn.setAttribute('aria-selected', isActive);
-        btn.className = `px-5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all border ${
+        btn.className = `relative flex items-center justify-center gap-0.5 rounded-lg px-2 py-1.5 font-medium text-sm transition-all duration-300 focus-visible:outline-none truncate ${
           isActive
-            ? 'bg-teal-500/20 text-teal-200 border-teal-500/50 shadow-glow-cyan'
-            : 'bg-transparent text-slate-400 border-transparent hover:text-slate-200'
+            ? 'text-white'
+            : 'text-slate-400 hover:bg-white/5 hover:text-white'
         }`;
       });
+
+      updateTabSlider();
 
       if (input) input.value = state.draftInput || '';
       document.getElementById('squadSizeValue').textContent = state.squadSize;
@@ -740,6 +774,17 @@
       updateValidationUI();
       renderTeams();
       renderCarouselFixtures();
+
+      const contentGrid = document.getElementById('divisionContentGrid');
+      if (contentGrid && contentGrid.animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        contentGrid.animate(
+          [
+            { opacity: 0, transform: `translateX(${direction * 28}px) scale(0.98)`, filter: 'blur(8px)' },
+            { opacity: 1, transform: 'translateX(0) scale(1)', filter: 'blur(0px)' }
+          ],
+          { duration: 400, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' }
+        );
+      }
     }
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -752,6 +797,8 @@
           }
         });
       }
+      requestAnimationFrame(updateTabSlider);
+      window.addEventListener('resize', updateTabSlider);
       updateValidationUI();
     });
 
@@ -1712,7 +1759,7 @@
       const r = c.getBoundingClientRect();
       c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
       c.style.setProperty('--my', (e.clientY - r.top) + 'px');
-    });
+    }, { passive: true });
   </script>
 </body>
 </html>
