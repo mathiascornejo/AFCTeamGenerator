@@ -325,9 +325,9 @@
     /* @react-bits/HoldButton-JS-CSS — themed for AFC Team Generator */
     .hold-button {
       --hb-radius: 0.75rem;
-      --hb-bg: rgb(var(--teal-500) / 0.14);
-      --hb-fill: rgb(var(--teal-500));
-      --hb-text: rgb(var(--teal-200));
+      --hb-bg: rgba(239, 68, 68, 0.14);
+      --hb-fill: #dc2626;
+      --hb-text: #fecaca;
       --hb-fill-text: #ffffff;
       --hb-hold: 1500ms;
       --hb-release: 200ms;
@@ -340,12 +340,12 @@
       --hb-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --hb-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        0 0 0 1px rgb(var(--teal-500) / 0.38),
+        0 0 0 1px rgba(239, 68, 68, 0.38),
         0 1px 2px 0 rgba(0, 0, 0, 0.25);
       --hb-glow:
         inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        0 0 0 1px rgb(var(--teal-300) / 0.8),
-        var(--glow-accent);
+        0 0 0 1px rgba(252, 165, 165, 0.8),
+        0 0 30px -5px rgba(239, 68, 68, 0.45);
 
       position: relative;
       display: inline-grid;
@@ -384,11 +384,11 @@
 
     @media (hover: hover) and (pointer: fine) {
       .hold-button:not(:disabled):hover {
-        background: rgb(var(--teal-500) / 0.24);
+        background: rgba(239, 68, 68, 0.24);
         color: #ffffff;
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.1),
-          0 0 0 1px rgb(var(--teal-300) / 0.75),
+          0 0 0 1px rgba(252, 165, 165, 0.75),
           0 2px 8px -2px rgba(0, 0, 0, 0.4);
       }
     }
@@ -416,7 +416,7 @@
     }
 
     .hold-button:focus-visible {
-      outline: 2px solid rgb(var(--pitch-300));
+      outline: 2px solid #f87171;
       outline-offset: 2px;
     }
 
@@ -430,7 +430,7 @@
     }
 
     .hold-button .hold-button__icon {
-      color: rgb(var(--teal-400));
+      color: #f87171;
       transition: color 160ms ease;
     }
 
@@ -460,11 +460,11 @@
     @keyframes hb-pulse {
       from {
         opacity: 1;
-        box-shadow: 0 0 0 0 rgb(var(--teal-400) / 0.55);
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.55);
       }
       to {
         opacity: 0;
-        box-shadow: 0 0 0 12px rgb(var(--teal-400) / 0);
+        box-shadow: 0 0 0 12px rgba(248, 113, 113, 0);
       }
     }
 
@@ -999,7 +999,7 @@
         dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
         label.textContent = text || 'Syncing...';
       } else if (mode === 'saved') {
-        dot.className = 'w-2 h-2 rounded-full bg-teal-400';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.65)]';
         label.textContent = text || 'Synced online';
       } else {
         dot.className = 'w-2 h-2 rounded-full bg-rose-400';
