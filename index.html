@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AFC Team Generator</title>
-  <meta name="description" content="Paste a roster, choose a squad size, and get squads, a round-robin match schedule and bib assignments.">
-  <meta property="og:title" content="AFC Team Generator"><meta property="og:description" content="Squads, matches and bibs from a pasted roster.">
+  <meta name="description" content="Paste a roster, choose a team size, and get teams, a round-robin match schedule and bib assignments.">
+  <meta property="og:title" content="AFC Team Generator"><meta property="og:description" content="Teams, matches and bibs from a pasted roster.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23060E14'/%3E%3Ccircle cx='50' cy='50' r='26' fill='none' stroke='%232DD4BF' stroke-width='7'/%3E%3Cpath d='M50 36l13 9-5 15H42l-5-15z' fill='%232DD4BF'/%3E%3C/svg%3E">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -26,21 +26,38 @@
           },
           colors: {
             pitch: {
-              950: '#060E14',
-              900: '#09151E',
-              850: '#0C1C28',
-              800: '#102433',
-              700: '#163347',
-              600: '#1B6A73',
-              500: '#138B88',
-              400: '#1EC9B8',
-              300: '#5EEAD4',
-              tealBtn: '#005D63',
-              tealHover: '#00757D'
+              950: 'rgb(var(--pitch-950) / <alpha-value>)',
+              900: 'rgb(var(--pitch-900) / <alpha-value>)',
+              850: 'rgb(var(--pitch-850) / <alpha-value>)',
+              800: 'rgb(var(--pitch-800) / <alpha-value>)',
+              700: 'rgb(var(--pitch-700) / <alpha-value>)',
+              600: 'rgb(var(--pitch-600) / <alpha-value>)',
+              500: 'rgb(var(--pitch-500) / <alpha-value>)',
+              400: 'rgb(var(--pitch-400) / <alpha-value>)',
+              300: 'rgb(var(--pitch-300) / <alpha-value>)',
+              tealBtn: 'var(--btn-from)',
+              tealHover: 'var(--btn-hover-from)'
+            },
+            teal: {
+              200: 'rgb(var(--teal-200) / <alpha-value>)',
+              300: 'rgb(var(--teal-300) / <alpha-value>)',
+              400: 'rgb(var(--teal-400) / <alpha-value>)',
+              500: 'rgb(var(--teal-500) / <alpha-value>)',
+              600: 'rgb(var(--teal-600) / <alpha-value>)',
+              700: 'rgb(var(--teal-700) / <alpha-value>)',
+              800: 'rgb(var(--teal-800) / <alpha-value>)',
+              950: 'rgb(var(--teal-950) / <alpha-value>)'
+            },
+            cyan: {
+              200: 'rgb(var(--cyan-200) / <alpha-value>)',
+              300: 'rgb(var(--cyan-300) / <alpha-value>)',
+              400: 'rgb(var(--cyan-400) / <alpha-value>)',
+              500: 'rgb(var(--cyan-500) / <alpha-value>)',
+              950: 'rgb(var(--cyan-950) / <alpha-value>)'
             }
           },
           boxShadow: {
-            'glow-cyan': '0 0 30px -5px rgba(30, 201, 184, 0.3)',
+            'glow-cyan': 'var(--glow-accent)',
             'glow-amber': '0 0 30px -5px rgba(245, 158, 11, 0.25)',
             'card-dark': '0 12px 30px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05)'
           }
@@ -52,6 +69,70 @@
   <style>
     :root {
       color-scheme: dark;
+      --pitch-950: 6 14 20;
+      --pitch-900: 9 21 30;
+      --pitch-850: 12 28 40;
+      --pitch-800: 16 36 51;
+      --pitch-700: 22 51 71;
+      --pitch-600: 27 106 115;
+      --pitch-500: 19 139 136;
+      --pitch-400: 30 201 184;
+      --pitch-300: 94 234 212;
+      --teal-200: 153 246 228;
+      --teal-300: 94 234 212;
+      --teal-400: 45 212 191;
+      --teal-500: 20 184 166;
+      --teal-600: 13 148 136;
+      --teal-700: 15 118 110;
+      --teal-800: 17 94 89;
+      --teal-950: 4 47 46;
+      --cyan-200: 165 243 252;
+      --cyan-300: 103 232 249;
+      --cyan-400: 34 211 238;
+      --cyan-500: 6 182 212;
+      --cyan-950: 8 51 68;
+      --btn-from: #005D63;
+      --btn-to: #0A4B50;
+      --btn-hover-from: #007077;
+      --btn-hover-to: #0C585E;
+      --glow-accent: 0 0 30px -5px rgba(30, 201, 184, 0.3);
+      --card-glow: 0 0 22px -2px rgba(34, 211, 238, 0.28);
+    }
+
+    body.theme-advanced {
+      --pitch-950: 20 6 8;
+      --pitch-900: 30 9 13;
+      --pitch-850: 40 12 17;
+      --pitch-800: 51 16 22;
+      --pitch-700: 71 22 30;
+      --pitch-600: 127 29 29;
+      --pitch-500: 185 28 28;
+      --pitch-400: 239 68 68;
+      --pitch-300: 252 165 165;
+      --teal-200: 254 202 202;
+      --teal-300: 252 165 165;
+      --teal-400: 248 113 113;
+      --teal-500: 239 68 68;
+      --teal-600: 220 38 38;
+      --teal-700: 185 28 28;
+      --teal-800: 153 27 27;
+      --teal-950: 69 10 10;
+      --cyan-200: 254 205 211;
+      --cyan-300: 253 164 175;
+      --cyan-400: 251 113 133;
+      --cyan-500: 244 63 94;
+      --cyan-950: 76 5 25;
+      --btn-from: #7F1D1D;
+      --btn-to: #5C1111;
+      --btn-hover-from: #991B1B;
+      --btn-hover-to: #741616;
+      --glow-accent: 0 0 30px -5px rgba(239, 68, 68, 0.35);
+      --card-glow: 0 0 22px -2px rgba(248, 113, 113, 0.28);
+      background-color: #140608;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(153, 27, 27, 0.26) 0%, transparent 60%),
+        radial-gradient(circle at 100% 25%, rgba(185, 28, 28, 0.10) 0%, transparent 45%),
+        radial-gradient(circle at 0% 80%, rgba(239, 68, 68, 0.07) 0%, transparent 45%);
     }
     
     body {
@@ -63,6 +144,7 @@
       font-family: 'Geist', system-ui, sans-serif;
       min-height: 100dvh;
       color: #E2E8F0;
+      transition: background-color 0.25s ease;
     }
 
     .shiny-text {
@@ -71,7 +153,7 @@
         #94a3b8 0%,
         #e2e8f0 35%,
         #ffffff 50%,
-        #2dd4bf 55%,
+        rgb(var(--teal-400)) 55%,
         #94a3b8 70%
       );
       background-size: 250% 100%;
@@ -89,8 +171,8 @@
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .roster-card.active-ready {
-      border-color: rgba(45, 212, 191, 0.5) !important;
-      box-shadow: 0 0 25px -3px rgba(45, 212, 191, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgb(var(--teal-400) / 0.5) !important;
+      box-shadow: 0 0 25px -3px rgb(var(--teal-400) / 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .shimmer-btn {
@@ -123,6 +205,9 @@
       mask-image: radial-gradient(circle at top right, black 30%, transparent 80%);
       -webkit-mask-image: radial-gradient(circle at top right, black 30%, transparent 80%);
     }
+    body.theme-advanced .hex-pattern-right {
+      background-image: url("data:image/svg+xml,%3Csvg width='56' height='97' viewBox='0 0 56 97' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23F87171' stroke-width='1.2'/%3E%3C/svg%3E");
+    }
     .hex-pattern-left {
       position: absolute;
       top: 380px;
@@ -135,6 +220,9 @@
       mask-image: radial-gradient(circle at bottom left, black 20%, transparent 80%);
       -webkit-mask-image: radial-gradient(circle at bottom left, black 20%, transparent 80%);
     }
+    body.theme-advanced .hex-pattern-left {
+      background-image: url("data:image/svg+xml,%3Csvg width='56' height='97' viewBox='0 0 56 97' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23EF4444' stroke-width='1.2'/%3E%3C/svg%3E");
+    }
 
     .dark-panel-card {
       background: linear-gradient(165deg, rgba(14, 28, 38, 0.88) 0%, rgba(8, 18, 25, 0.96) 100%);
@@ -142,6 +230,9 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    body.theme-advanced .dark-panel-card {
+      background: linear-gradient(165deg, rgba(38, 14, 18, 0.88) 0%, rgba(25, 8, 11, 0.96) 100%);
     }
 
     .tilt-wrapper {
@@ -155,11 +246,17 @@
       transform-style: preserve-3d;
       transition: transform 0.15s ease-out, box-shadow 0.2s ease;
     }
+    body.theme-advanced .team-card-dark {
+      background: linear-gradient(180deg, #240C10 0%, #1B080B 100%);
+    }
 
     .fixtures-glass {
       background: linear-gradient(165deg, #091722 0%, #060E15 100%);
-      border: 1px solid rgba(30, 201, 184, 0.18);
+      border: 1px solid rgb(var(--pitch-400) / 0.18);
       box-shadow: 0 18px 36px -12px rgba(0, 0, 0, 0.8);
+    }
+    body.theme-advanced .fixtures-glass {
+      background: linear-gradient(165deg, #22090D 0%, #150608 100%);
     }
 
     .custom-scrollbar::-webkit-scrollbar {
@@ -167,23 +264,23 @@
       height: 5px;
     }
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(6, 14, 20, 0.7);
+      background: rgb(var(--pitch-950) / 0.7);
       border-radius: 9999px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #163347;
+      background: rgb(var(--pitch-700));
       border-radius: 9999px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #1EC9B8;
+      background: rgb(var(--pitch-400));
     }
 
     .player-card {
       transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .player-card:hover {
-      background: rgba(20, 38, 51, 0.75);
-      border-color: rgba(45, 212, 191, 0.35);
+      background: rgb(var(--pitch-800) / 0.75);
+      border-color: rgb(var(--teal-400) / 0.35);
       transform: translateX(2px);
     }
 
@@ -192,9 +289,9 @@
       transform: scale(0.97);
     }
     .drag-target-active {
-      border-color: #2DD4BF !important;
-      background: rgba(45, 212, 191, 0.08) !important;
-      box-shadow: 0 0 25px rgba(45, 212, 191, 0.25) !important;
+      border-color: rgb(var(--teal-400)) !important;
+      background: rgb(var(--teal-400) / 0.08) !important;
+      box-shadow: 0 0 25px rgb(var(--teal-400) / 0.25) !important;
     }
 
     .token-chip {
@@ -209,8 +306,8 @@
     h1,h2,h3,p { text-wrap: balance; }
     p { text-wrap: pretty; }
     .font-mono, .tabular { font-variant-numeric: tabular-nums; }
-    :focus-visible { outline: 2px solid #5EEAD4; outline-offset: 2px; }
-    .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 60; background: #5EEAD4; color: #060E14; padding: .5rem .9rem; border-radius: .5rem; font-weight: 600; font-size: .8rem; transition: top .2s; }
+    :focus-visible { outline: 2px solid rgb(var(--pitch-300)); outline-offset: 2px; }
+    .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 60; background: rgb(var(--pitch-300)); color: rgb(var(--pitch-950)); padding: .5rem .9rem; border-radius: .5rem; font-weight: 600; font-size: .8rem; transition: top .2s; }
     .skip-link:focus { top: 1rem; }
     body::before { content: ''; position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
@@ -220,7 +317,7 @@
     .team-card-dark { transform-style: flat; }
     .dark-panel-card, .team-card-dark, .fixtures-glass { position: relative; }
     .dark-panel-card::after, .team-card-dark::after, .fixtures-glass::after { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0; transition: opacity .3s;
-      background: radial-gradient(240px circle at var(--mx,50%) var(--my,0%), rgba(94,234,212,.6), transparent 65%);
+      background: radial-gradient(240px circle at var(--mx,50%) var(--my,0%), rgb(var(--pitch-300) / .6), transparent 65%);
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
     .dark-panel-card:hover::after, .team-card-dark:hover::after, .fixtures-glass:hover::after { opacity: 1; }
     @media (prefers-reduced-motion: reduce) { .word, .fade-in { animation: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
@@ -242,12 +339,12 @@
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
       <div class="lg:col-span-8">
         <p class="font-mono text-xs text-teal-300/80 mb-6 flex items-center gap-3 fade-in" style="animation-delay:0s"><span class="w-8 h-px bg-teal-400/60"></span>afc / team generator</p>
-        <h1 class="font-serif text-[2.9rem] sm:text-7xl lg:text-[5.6rem] leading-[.95] tracking-[-0.03em] text-white"><span class="word" style="--i:0">Split</span> <span class="word" style="--i:1">your</span> <span class="word" style="--i:2">roster</span> <span class="word" style="--i:3">into</span> <span class="word shiny-text italic pr-2" style="--i:4">even</span> <span class="word shiny-text italic pr-2" style="--i:5">squads.</span> </h1>
-        <p class="mt-8 text-slate-400 text-base max-w-[52ch] leading-relaxed fade-in">Paste a list of names and pick a squad size. The generator forms the squads, schedules every team against every other team, and assigns bibs as evenly as the schedule allows.</p>
+        <h1 class="font-serif text-[2.9rem] sm:text-7xl lg:text-[5.6rem] leading-[.95] tracking-[-0.03em] text-white"><span class="word" style="--i:0">Split</span> <span class="word" style="--i:1">your</span> <span class="word" style="--i:2">roster</span> <span class="word" style="--i:3">into</span> <span class="word shiny-text italic pr-2" style="--i:4">even</span> <span class="word shiny-text italic pr-2" style="--i:5">teams.</span> </h1>
+        <p class="mt-8 text-slate-400 text-base max-w-[52ch] leading-relaxed fade-in">Paste a list of names and pick a team size. The generator forms the teams, schedules every team against every other team, and assigns bibs as evenly as the schedule allows.</p>
       </div>
       <dl class="lg:col-span-4 grid grid-cols-3 lg:grid-cols-1 gap-6 lg:border-l lg:border-slate-800 lg:pl-8 fade-in">
         <div><dt class="font-mono text-[11px] text-slate-500">minimum players</dt><dd class="font-serif text-4xl text-white">2</dd></div>
-        <div><dt class="font-mono text-[11px] text-slate-500">squad size</dt><dd class="font-serif text-4xl text-white">2–12</dd></div>
+        <div><dt class="font-mono text-[11px] text-slate-500">team size</dt><dd class="font-serif text-4xl text-white">2–12</dd></div>
         <div><dt class="font-mono text-[11px] text-slate-500">bibs</dt><dd class="font-serif text-4xl text-amber-300 italic">shared</dd></div>
       </dl>
     </div>
@@ -322,13 +419,13 @@
 
           <div class="mt-4 flex items-center justify-between gap-4">
             <div>
-              <span id="sizeLabel" class="text-sm font-medium text-white">Players per squad</span>
-              <p class="text-xs text-slate-500 mt-0.5 max-w-[30ch]">Squads hold up to this many. Sizes differ by at most one.</p>
+              <span id="sizeLabel" class="text-sm font-medium text-white">Players per team</span>
+              <p class="text-xs text-slate-500 mt-0.5 max-w-[30ch]">Teams hold up to this many. Sizes differ by at most one.</p>
             </div>
             <div role="group" aria-labelledby="sizeLabel" class="flex items-center rounded-xl border border-slate-700/70 bg-pitch-950/80">
-              <button type="button" onclick="changeSquadSize(-1)" aria-label="Fewer players per squad" class="w-10 h-10 text-lg text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-l-xl transition active:scale-95">&minus;</button>
+              <button type="button" onclick="changeSquadSize(-1)" aria-label="Fewer players per team" class="w-10 h-10 text-lg text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-l-xl transition active:scale-95">&minus;</button>
               <output id="squadSizeValue" aria-live="polite" class="w-10 text-center font-mono text-base text-white">5</output>
-              <button type="button" onclick="changeSquadSize(1)" aria-label="More players per squad" class="w-10 h-10 text-lg text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-r-xl transition active:scale-95">+</button>
+              <button type="button" onclick="changeSquadSize(1)" aria-label="More players per team" class="w-10 h-10 text-lg text-slate-300 hover:text-white hover:bg-slate-800/70 rounded-r-xl transition active:scale-95">+</button>
             </div>
           </div>
 
@@ -341,7 +438,7 @@
             </div>
             <div class="min-w-0 flex-1">
               <p id="ruleText" class="text-xs text-slate-300 leading-relaxed">
-                Add at least 2 players, choose a squad size, then generate. You can also build teams by hand.
+                Add at least 2 players, choose a team size, then generate. You can also build teams by hand.
               </p>
             </div>
           </div>
@@ -353,7 +450,7 @@
               type="button"
               onclick="generateTeams()"
               disabled
-              class="shimmer-btn w-full py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm tracking-tight text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] shadow-md shadow-teal-950/40 border border-teal-500/20 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
+              class="shimmer-btn w-full py-3.5 px-5 rounded-xl font-bold text-xs sm:text-sm tracking-tight text-white bg-gradient-to-r from-[var(--btn-from)] to-[var(--btn-to)] hover:from-[var(--btn-hover-from)] hover:to-[var(--btn-hover-to)] shadow-md shadow-teal-950/40 border border-teal-500/20 transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 disabled:opacity-35 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
             >
               <span>Auto-generate</span>
               <svg class="w-4 h-4 text-teal-200 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -424,7 +521,7 @@
           <button
             type="button"
             onclick="createNewTeam()"
-            class="px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] border border-teal-500/40 shadow-lg shadow-teal-950/40 flex items-center gap-2 transition active:scale-95"
+            class="px-4 py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[var(--btn-from)] to-[var(--btn-to)] hover:from-[var(--btn-hover-from)] hover:to-[var(--btn-hover-to)] border border-teal-500/40 shadow-lg shadow-teal-950/40 flex items-center gap-2 transition active:scale-95"
           >
             <svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
@@ -521,7 +618,7 @@
           </button>
           <button
             type="submit"
-            class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[#005D63] to-[#0A4B50] hover:from-[#007077] hover:to-[#0C585E] border border-teal-500/30 shadow-md shadow-teal-950/40 transition active:scale-95 flex items-center gap-1.5"
+            class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-[var(--btn-from)] to-[var(--btn-to)] hover:from-[var(--btn-hover-from)] hover:to-[var(--btn-hover-to)] border border-teal-500/30 shadow-md shadow-teal-950/40 transition active:scale-95 flex items-center gap-1.5"
           >
             <svg class="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
@@ -540,7 +637,7 @@
       { 
         name: 'Cyan', 
         border: 'border-cyan-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(34,211,238,0.28)]', 
+        glow: 'shadow-[var(--card-glow)]', 
         iconBg: 'bg-cyan-500/15 text-cyan-300 border-cyan-400/40',
         avatarBg: 'bg-cyan-950/80 text-cyan-200 border-cyan-500/40'
       },
@@ -623,6 +720,7 @@
 
       activeTab = tab;
       state = instances[tab];
+      document.body.classList.toggle('theme-advanced', activeTab === 'advanced');
 
       ['beginners', 'advanced'].forEach(key => {
         const btn = document.getElementById(`tab-${key}`);
@@ -747,7 +845,7 @@
 
     function calculateTeamDistribution(totalPlayers, minTeams = 2) {
       if (totalPlayers < minTeams) {
-        return { valid: false, totalPlayers, reason: minTeams === 1 ? 'No unlocked players left to place.' : 'Add at least 2 players to form squads.' };
+        return { valid: false, totalPlayers, reason: minTeams === 1 ? 'No unlocked players left to place.' : 'Add at least 2 players to form teams.' };
       }
       const totalTeams = Math.max(minTeams, Math.ceil(totalPlayers / state.squadSize));
       const base = Math.floor(totalPlayers / totalTeams);
@@ -774,7 +872,7 @@
 
       if (count === 0) {
         counterEl.className = 'text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-pitch-950 border border-slate-700/60 text-slate-400';
-        ruleText.innerHTML = `Add at least 2 players, choose a squad size, then generate. You can also build teams by hand.`;
+        ruleText.innerHTML = `Add at least 2 players, choose a team size, then generate. You can also build teams by hand.`;
         ruleText.className = 'text-xs text-slate-300 leading-relaxed';
         ruleIcon.className = 'mt-0.5 shrink-0 text-teal-400';
         generateBtn.disabled = true;
@@ -1279,7 +1377,7 @@
 
         footer.className = 'px-4 py-2 bg-slate-950/60 border-t border-slate-800/60 flex items-center justify-between text-[11px]';
         footer.innerHTML = `
-          <span class="text-slate-400 font-mono">${team.locked ? "Locked" : "Squad"}</span>
+          <span class="text-slate-400 font-mono">${team.locked ? "Locked" : "Team"}</span>
           <span class="font-mono font-semibold ${badgeColor}">
             ${badgeLabel}
           </span>
@@ -1515,7 +1613,7 @@
 
       targetTeamIndexForAdd = teamIndex;
       document.getElementById('addPlayerModalTitle').textContent = `Add player to team ${team.teamNumber}`;
-      document.getElementById('addPlayerModalSubtitle').textContent = `Current squad: ${team.players.length} members`;
+      document.getElementById('addPlayerModalSubtitle').textContent = `Current team: ${team.players.length} members`;
       const input = document.getElementById('newPlayerNameInput');
       input.value = '';
       const modal = document.getElementById('addPlayerModal');
@@ -1571,7 +1669,7 @@
       const toast = document.createElement('div');
 
       const bgClasses = {
-        success: 'bg-[#005D63] border-teal-400 text-white shadow-lg',
+        success: 'bg-[var(--btn-from)] border-teal-400 text-white shadow-lg',
         error: 'bg-rose-950 border-rose-600 text-rose-200 shadow-xl',
         info: 'bg-slate-900 border-slate-700 text-slate-200 shadow-xl'
       };
