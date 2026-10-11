@@ -254,6 +254,30 @@
   </header>
 
   <main id="main" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full z-10">
+    <!-- Division Selector Tabs -->
+    <div role="tablist" aria-label="Player division" class="mb-6 inline-flex items-center gap-2 p-1.5 rounded-2xl bg-pitch-900/90 border border-slate-800">
+      <button
+        type="button"
+        role="tab"
+        id="tab-beginners"
+        aria-selected="true"
+        onclick="switchTab('beginners')"
+        class="px-5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all border bg-teal-500/20 text-teal-200 border-teal-500/50 shadow-glow-cyan"
+      >
+        Beginners
+      </button>
+      <button
+        type="button"
+        role="tab"
+        id="tab-advanced"
+        aria-selected="false"
+        onclick="switchTab('advanced')"
+        class="px-5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all border bg-transparent text-slate-400 border-transparent hover:text-slate-200"
+      >
+        Advanced
+      </button>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
       
       <!-- LEFT COLUMN: Tag Roster Input Panel -->
@@ -572,16 +596,53 @@
     ];
 
     const TEAM_THEMES = Array(8).fill(TEAM_THEMES_RAW[0]);
-    let state = {
+    const createInitialState = () => ({
       squadSize: 5,
       playerTags: [],
       teams: [],
       rounds: [],
       activeRoundIndex: 0,
-      draggedItem: null
+      draggedItem: null,
+      draftInput: ''
+    });
+
+    const instances = {
+      beginners: createInitialState(),
+      advanced: createInitialState()
     };
+    let activeTab = 'beginners';
+    let state = instances[activeTab];
 
     let targetTeamIndexForAdd = null;
+
+    function switchTab(tab) {
+      if (!instances[tab] || tab === activeTab) return;
+      const input = document.getElementById('tagInputField');
+      if (input) state.draftInput = input.value;
+      closeAddPlayerModal();
+
+      activeTab = tab;
+      state = instances[tab];
+
+      ['beginners', 'advanced'].forEach(key => {
+        const btn = document.getElementById(`tab-${key}`);
+        if (!btn) return;
+        const isActive = key === activeTab;
+        btn.setAttribute('aria-selected', isActive);
+        btn.className = `px-5 py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all border ${
+          isActive
+            ? 'bg-teal-500/20 text-teal-200 border-teal-500/50 shadow-glow-cyan'
+            : 'bg-transparent text-slate-400 border-transparent hover:text-slate-200'
+        }`;
+      });
+
+      if (input) input.value = state.draftInput || '';
+      document.getElementById('squadSizeValue').textContent = state.squadSize;
+      renderPlayerTags();
+      updateValidationUI();
+      renderTeams();
+      renderCarouselFixtures();
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       const containerBox = document.getElementById('tagContainerBox');
@@ -1533,8 +1594,7 @@
       setTimeout(() => {
         toast.classList.add('translate-y-3', 'opacity-0');
         setTimeout(() => {
-          if (toast.parentElement) toast.parentElement.removeChild(toast);
-        }, 300);
+          if (toast.parentElement) toast.parentElement.removeChild(toast);\n        }, 300);
       }, 3200);
     }
 
