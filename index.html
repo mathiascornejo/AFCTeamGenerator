@@ -322,25 +322,30 @@
       will-change: transform, width;
     }
 
-    /* @react-bits/HoldButton-JS-CSS */
+    /* @react-bits/HoldButton-JS-CSS — themed for AFC Team Generator */
     .hold-button {
-      --hb-radius: 14px;
-      --hb-bg: #27272a;
-      --hb-fill: #5227ff;
-      --hb-text: #f5f5f5;
+      --hb-radius: 0.75rem;
+      --hb-bg: rgb(var(--teal-500) / 0.14);
+      --hb-fill: rgb(var(--teal-500));
+      --hb-text: rgb(var(--teal-200));
       --hb-fill-text: #ffffff;
-      --hb-hold: 2000ms;
+      --hb-hold: 1500ms;
       --hb-release: 200ms;
-      --hb-press: 0.97;
+      --hb-press: 0.96;
       --hb-wave: 6px;
       --hb-w: 0px;
       --hb-h: 0px;
-      --hb-cycles: 2;
+      --hb-cycles: 1.4;
       --hb-p: 0;
       --hb-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-      --hb-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      --hb-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
+        0 0 0 1px rgb(var(--teal-500) / 0.38),
+        0 1px 2px 0 rgba(0, 0, 0, 0.25);
       --hb-glow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 32px -6px color-mix(in srgb, var(--hb-fill) 70%, transparent);
+        inset 0 1px 0 rgba(255, 255, 255, 0.18),
+        0 0 0 1px rgb(var(--teal-300) / 0.8),
+        var(--glow-accent);
 
       position: relative;
       display: inline-grid;
@@ -351,8 +356,8 @@
       border-radius: var(--hb-radius);
       background: var(--hb-bg);
       color: var(--hb-text);
-      font-family: inherit;
-      font-weight: 500;
+      font-family: 'Geist', system-ui, sans-serif;
+      font-weight: 600;
       letter-spacing: 0.01em;
       line-height: 1;
       box-shadow: var(--hb-shadow);
@@ -366,30 +371,36 @@
       transition:
         transform 160ms var(--hb-ease-out),
         background-color 160ms ease,
+        color 160ms ease,
         box-shadow var(--hb-release) var(--hb-ease-out);
     }
 
     .hold-button--sm {
-      height: 34px;
-      padding: 0 14px;
-      font-size: 12px;
+      height: 30px;
+      padding: 0 12px;
+      font-size: 0.75rem;
     }
 
     .hold-button--md {
-      height: 44px;
-      padding: 0 22px;
-      font-size: 15px;
+      height: 40px;
+      padding: 0 18px;
+      font-size: 0.875rem;
     }
 
     .hold-button--lg {
-      height: 52px;
-      padding: 0 28px;
-      font-size: 17px;
+      height: 48px;
+      padding: 0 24px;
+      font-size: 1rem;
     }
 
     @media (hover: hover) and (pointer: fine) {
       .hold-button:not(:disabled):hover {
-        background: color-mix(in srgb, var(--hb-bg) 92%, #fff);
+        background: rgb(var(--teal-500) / 0.24);
+        color: #ffffff;
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 0 0 1px rgb(var(--teal-300) / 0.75),
+          0 2px 8px -2px rgba(0, 0, 0, 0.4);
       }
     }
 
@@ -410,14 +421,26 @@
     }
 
     .hold-button:focus-visible {
-      outline: 2px solid var(--hb-fill);
-      outline-offset: 3px;
+      outline: 2px solid rgb(var(--pitch-300));
+      outline-offset: 2px;
     }
 
     .hold-button:disabled {
-      opacity: 0.45;
-      cursor: default;
+      background: rgb(var(--pitch-950) / 0.8);
+      color: #64748b;
+      box-shadow: 0 0 0 1px rgba(51, 65, 85, 0.6);
+      opacity: 0.65;
+      cursor: not-allowed;
       pointer-events: none;
+    }
+
+    .hold-button > .hold-button__label .hold-button__icon {
+      color: rgb(var(--teal-400));
+      transition: color 160ms ease;
+    }
+
+    .hold-button:disabled > .hold-button__label .hold-button__icon {
+      color: #64748b;
     }
 
     .hold-button__pulse {
@@ -436,11 +459,11 @@
     @keyframes hb-pulse {
       from {
         opacity: 1;
-        box-shadow: 0 0 0 0 color-mix(in srgb, var(--hb-fill) 55%, transparent);
+        box-shadow: 0 0 0 0 rgb(var(--teal-400) / 0.55);
       }
       to {
         opacity: 0;
-        box-shadow: 0 0 0 14px color-mix(in srgb, var(--hb-fill) 0%, transparent);
+        box-shadow: 0 0 0 12px rgb(var(--teal-400) / 0);
       }
     }
 
@@ -691,13 +714,12 @@
               data-direction="right"
               data-glow="true"
               aria-describedby="clearAllBtnHint"
-              style="--hb-radius: 11px; --hb-bg: rgb(var(--pitch-900)); --hb-fill: #e11d48; --hb-text: #e2e8f0; --hb-fill-text: #ffffff; --hb-hold: 1500ms; --hb-cycles: 1.3636; --hb-release: 200ms; --hb-press: 0.97; --hb-wave: 6px;"
             >
               <span class="hold-button__pulse" aria-hidden="true"></span>
               <span class="hold-button__label">
                 <span class="hold-button__idle" aria-hidden="false">
                   <span class="hold-button__icon">
-                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
                   </span>
@@ -705,7 +727,7 @@
                 </span>
                 <span class="hold-button__done" aria-hidden="true">
                   <span class="hold-button__icon">
-                    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                     </svg>
                   </span>
@@ -717,7 +739,7 @@
                   <span class="hold-button__label hold-button__label--fill">
                     <span class="hold-button__idle" aria-hidden="false">
                       <span class="hold-button__icon">
-                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
                       </span>
@@ -725,7 +747,7 @@
                     </span>
                     <span class="hold-button__done" aria-hidden="true">
                       <span class="hold-button__icon">
-                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                         </svg>
                       </span>
@@ -737,7 +759,7 @@
                   <span class="hold-button__label hold-button__label--fill">
                     <span class="hold-button__idle" aria-hidden="false">
                       <span class="hold-button__icon">
-                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
                       </span>
@@ -745,7 +767,7 @@
                     </span>
                     <span class="hold-button__done" aria-hidden="true">
                       <span class="hold-button__icon">
-                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                         </svg>
                       </span>
