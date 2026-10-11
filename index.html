@@ -235,15 +235,9 @@
       background: linear-gradient(165deg, rgba(38, 14, 18, 0.88) 0%, rgba(25, 8, 11, 0.96) 100%);
     }
 
-    .tilt-wrapper {
-      perspective: 1000px;
-    }
     .team-card-dark {
       background: linear-gradient(180deg, #0C1A24 0%, #08131B 100%);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.7);
-      transform-style: preserve-3d;
       transition: transform 0.15s ease-out, box-shadow 0.2s ease;
     }
     body.theme-advanced .team-card-dark {
@@ -309,12 +303,9 @@
     :focus-visible { outline: 2px solid rgb(var(--pitch-300)); outline-offset: 2px; }
     .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 60; background: rgb(var(--pitch-300)); color: rgb(var(--pitch-950)); padding: .5rem .9rem; border-radius: .5rem; font-weight: 600; font-size: .8rem; transition: top .2s; }
     .skip-link:focus { top: 1rem; }
-    body::before { content: ''; position: fixed; inset: 0; z-index: 30; pointer-events: none; opacity: .07; mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
     .word { display: inline-block; opacity: 0; transform: translateY(.55em); animation: rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay: calc(var(--i) * 80ms + 100ms); }
     @keyframes rise { to { opacity: 1; transform: none; } }
     .fade-in { opacity: 0; animation: rise .9s cubic-bezier(.16,1,.3,1) .65s forwards; }
-    .team-card-dark { transform-style: flat; }
     .dark-panel-card, .team-card-dark, .fixtures-glass { position: relative; }
     .dark-panel-card::after, .team-card-dark::after, .fixtures-glass::after { content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0; transition: opacity .3s;
       background: radial-gradient(240px circle at var(--mx,50%) var(--my,0%), rgb(var(--pitch-300) / .6), transparent 65%);
@@ -651,66 +642,6 @@
   <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
-    const TEAM_THEMES_RAW = [
-      { 
-        name: 'Cyan', 
-        border: 'border-cyan-400/50', 
-        glow: 'shadow-[var(--card-glow)]', 
-        iconBg: 'bg-cyan-500/15 text-cyan-300 border-cyan-400/40',
-        avatarBg: 'bg-cyan-950/80 text-cyan-200 border-cyan-500/40'
-      },
-      { 
-        name: 'Amber', 
-        border: 'border-amber-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(251,191,36,0.28)]', 
-        iconBg: 'bg-amber-500/15 text-amber-300 border-amber-400/40',
-        avatarBg: 'bg-amber-950/80 text-amber-200 border-amber-500/40'
-      },
-      { 
-        name: 'Purple', 
-        border: 'border-purple-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(192,132,252,0.28)]', 
-        iconBg: 'bg-purple-500/15 text-purple-300 border-purple-400/40',
-        avatarBg: 'bg-purple-950/80 text-purple-200 border-purple-500/40'
-      },
-      { 
-        name: 'Emerald', 
-        border: 'border-emerald-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(52,211,153,0.28)]', 
-        iconBg: 'bg-emerald-500/15 text-emerald-300 border-emerald-400/40',
-        avatarBg: 'bg-emerald-950/80 text-emerald-200 border-emerald-500/40'
-      },
-      { 
-        name: 'Rose', 
-        border: 'border-rose-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(251,113,133,0.28)]', 
-        iconBg: 'bg-rose-500/15 text-rose-300 border-rose-400/40',
-        avatarBg: 'bg-rose-950/80 text-rose-200 border-rose-500/40'
-      },
-      { 
-        name: 'Blue', 
-        border: 'border-blue-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(96,165,250,0.28)]', 
-        iconBg: 'bg-blue-500/15 text-blue-300 border-blue-400/40',
-        avatarBg: 'bg-blue-950/80 text-blue-200 border-blue-500/40'
-      },
-      { 
-        name: 'Orange', 
-        border: 'border-orange-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(251,146,60,0.28)]', 
-        iconBg: 'bg-orange-500/15 text-orange-300 border-orange-400/40',
-        avatarBg: 'bg-orange-950/80 text-orange-200 border-orange-500/40'
-      },
-      { 
-        name: 'Fuchsia', 
-        border: 'border-fuchsia-400/50', 
-        glow: 'shadow-[0_0_22px_-2px_rgba(232,121,249,0.28)]', 
-        iconBg: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-400/40',
-        avatarBg: 'bg-fuchsia-950/80 text-fuchsia-200 border-fuchsia-500/40'
-      }
-    ];
-
-    const TEAM_THEMES = Array(8).fill(TEAM_THEMES_RAW[0]);
     const createInitialState = () => ({
       squadSize: 5,
       playerTags: [],
@@ -802,17 +733,19 @@
       updateValidationUI();
     });
 
-    function addPlayerTag(name) {
+    function addPlayerTag(name, silent = false) {
       const trimmed = name.trim();
       if (!trimmed) return false;
       const lower = trimmed.toLowerCase();
       if (state.playerTags.some(p => p.toLowerCase() === lower)) {
-        showToast(`"${trimmed}" is already in roster`, 'error');
+        if (!silent) showToast(`"${trimmed}" is already in roster`, 'error');
         return false;
       }
       state.playerTags.push(trimmed);
-      renderPlayerTags();
-      updateValidationUI();
+      if (!silent) {
+        renderPlayerTags();
+        updateValidationUI();
+      }
       return true;
     }
 
@@ -833,7 +766,6 @@
       const container = document.getElementById('tokensList');
       const clearBtn = document.getElementById('clearAllBtn');
       const input = document.getElementById('tagInputField');
-      container.innerHTML = '';
 
       if (state.playerTags.length > 0) {
         clearBtn.classList.remove('hidden');
@@ -843,6 +775,7 @@
         input.placeholder = "Add a name, or paste a list";
       }
 
+      const frag = document.createDocumentFragment();
       state.playerTags.forEach((name, idx) => {
         const chip = document.createElement('span');
         chip.className = 'token-chip inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-mono bg-pitch-900 border border-teal-500/30 text-teal-200 hover:border-teal-400 transition-all select-none shadow-sm';
@@ -859,8 +792,9 @@
             </svg>
           </button>
         `;
-        container.appendChild(chip);
+        frag.appendChild(chip);
       });
+      container.replaceChildren(frag);
     }
 
     function handleTagKeydown(e) {
@@ -882,10 +816,12 @@
       const tokens = pasteText.split(/[\n,\t\r]+/).map(t => t.trim()).filter(Boolean);
       let added = 0;
       tokens.forEach(tok => {
-        if (addPlayerTag(tok)) added++;
+        if (addPlayerTag(tok, true)) added++;
       });
       e.target.value = '';
       if (added > 0) {
+        renderPlayerTags();
+        updateValidationUI();
         showToast(`Imported ${added} players`, 'success');
       }
     }
@@ -960,61 +896,27 @@
     }
 
     function assignEqualBibs(schedule, teams) {
-      if (!teams || teams.length < 2) return;
-      const n = teams.length;
-      const teamIndices = new Map();
-      teams.forEach((t, i) => teamIndices.set(t.teamNumber, i));
+      const n = teams?.length || 0;
+      if (n < 2) return;
+      const teamIndices = new Map(teams.map((t, i) => [t.teamNumber, i]));
+      const subN = n % 2 === 0 ? n - 1 : n;
 
-      const allMatches = [];
-      schedule.forEach(round => round.matches.forEach(m => allMatches.push(m)));
-
-      const orientationMatrix = Array.from({ length: n }, () => Array(n).fill(null));
-
-      if (n % 2 !== 0) {
-        for (let i = 0; i < n; i++) {
-          for (let j = 0; j < n; j++) {
-            if (i === j) continue;
-            const diff = (j - i + n) % n;
-            if (diff >= 1 && diff <= (n - 1) / 2) {
-              orientationMatrix[i][j] = i;
-              orientationMatrix[j][i] = i;
-            }
-          }
-        }
-      } else {
-        const subN = n - 1;
-        for (let i = 0; i < subN; i++) {
-          for (let j = 0; j < subN; j++) {
-            if (i === j) continue;
-            const diff = (j - i + subN) % subN;
-            if (diff >= 1 && diff <= (subN - 1) / 2) {
-              orientationMatrix[i][j] = i;
-              orientationMatrix[j][i] = i;
-            }
-          }
-        }
-        const lastIdx = n - 1;
-        for (let i = 0; i < subN; i++) {
-          if (i % 2 === 0) {
-            orientationMatrix[lastIdx][i] = lastIdx;
-            orientationMatrix[i][lastIdx] = lastIdx;
-          } else {
-            orientationMatrix[i][lastIdx] = i;
-            orientationMatrix[lastIdx][i] = i;
-          }
-        }
-      }
-
-      allMatches.forEach(match => {
+      schedule.forEach(round => round.matches.forEach(match => {
         const u = teamIndices.get(match.teamANumber);
         const v = teamIndices.get(match.teamBNumber);
-        if (u !== undefined && v !== undefined && orientationMatrix[u][v] !== null) {
-          const bibIdx = orientationMatrix[u][v];
-          match.bibTeamNumber = teams[bibIdx].teamNumber;
-        } else {
+        if (u === undefined || v === undefined) {
           match.bibTeamNumber = match.teamANumber;
+          return;
         }
-      });
+        let bibIdx;
+        if (n % 2 === 0 && (u === subN || v === subN)) {
+          const other = u === subN ? v : u;
+          bibIdx = other % 2 === 0 ? subN : other;
+        } else {
+          bibIdx = ((v - u + subN) % subN) <= (subN - 1) / 2 ? u : v;
+        }
+        match.bibTeamNumber = teams[bibIdx].teamNumber;
+      }));
     }
 
     function buildRoundRobinSchedule(teams) {
@@ -1022,80 +924,40 @@
       if (n < 2) return [];
       const schedule = [];
       let globalGameCounter = 1;
+      const makeMatch = (roundNumber, teamA, teamB) => {
+        const [firstTeam, secondTeam] = teamA.teamNumber < teamB.teamNumber
+          ? [teamA.teamNumber, teamB.teamNumber]
+          : [teamB.teamNumber, teamA.teamNumber];
+        return {
+          id: `match-${globalGameCounter}`,
+          gameNumber: globalGameCounter++,
+          roundNumber,
+          teamANumber: firstTeam,
+          teamBNumber: secondTeam,
+          bibTeamNumber: null,
+          completed: false
+        };
+      };
 
       if (n % 2 !== 0) {
+        const numPairs = (n - 1) / 2;
         for (let k = 0; k < n; k++) {
-          const byeTeam = teams[n - 1 - k];
           const roundMatches = [];
-          const numPairs = (n - 1) / 2;
-
           for (let s = 1; s <= numPairs; s++) {
-            const idxA = (k - s + n) % n;
-            const idxB = (k + s) % n;
-            const teamA = teams[n - 1 - idxA];
-            const teamB = teams[n - 1 - idxB];
-
-            const [firstTeam, secondTeam] = teamA.teamNumber < teamB.teamNumber
-              ? [teamA.teamNumber, teamB.teamNumber]
-              : [teamB.teamNumber, teamA.teamNumber];
-
-            roundMatches.push({
-              id: `match-${globalGameCounter}`,
-              gameNumber: globalGameCounter++,
-              roundNumber: k + 1,
-              teamANumber: firstTeam,
-              teamBNumber: secondTeam,
-              bibTeamNumber: null,
-              completed: false
-            });
+            roundMatches.push(makeMatch(k + 1, teams[n - 1 - ((k - s + n) % n)], teams[n - 1 - ((k + s) % n)]));
           }
-
-          schedule.push({
-            roundNumber: k + 1,
-            byeTeamNumber: byeTeam.teamNumber,
-            matches: roundMatches
-          });
+          schedule.push({ roundNumber: k + 1, byeTeamNumber: teams[n - 1 - k].teamNumber, matches: roundMatches });
         }
       } else {
-        const teamList = teams.map(t => ({ teamNumber: t.teamNumber }));
-        const numRounds = n - 1;
+        const rotationList = teams.map(t => ({ teamNumber: t.teamNumber }));
         const matchesPerRound = n / 2;
-        const rotationList = [...teamList];
-
-        for (let roundIndex = 0; roundIndex < numRounds; roundIndex++) {
+        for (let r = 0; r < n - 1; r++) {
           const roundMatches = [];
-
-          for (let matchIndex = 0; matchIndex < matchesPerRound; matchIndex++) {
-            const teamA = rotationList[matchIndex];
-            const teamB = rotationList[n - 1 - matchIndex];
-
-            const [firstTeam, secondTeam] = teamA.teamNumber < teamB.teamNumber
-              ? [teamA.teamNumber, teamB.teamNumber]
-              : [teamB.teamNumber, teamA.teamNumber];
-
-            roundMatches.push({
-              id: `match-${globalGameCounter}`,
-              gameNumber: globalGameCounter++,
-              roundNumber: roundIndex + 1,
-              teamANumber: firstTeam,
-              teamBNumber: secondTeam,
-              bibTeamNumber: null,
-              completed: false
-            });
+          for (let m = 0; m < matchesPerRound; m++) {
+            roundMatches.push(makeMatch(r + 1, rotationList[m], rotationList[n - 1 - m]));
           }
-
-          schedule.push({
-            roundNumber: roundIndex + 1,
-            byeTeamNumber: null,
-            matches: roundMatches
-          });
-
-          const fixed = rotationList[0];
-          const rotating = rotationList.slice(1);
-          const lastTeam = rotating.pop();
-          rotating.unshift(lastTeam);
-          rotationList.length = 0;
-          rotationList.push(fixed, ...rotating);
+          schedule.push({ roundNumber: r + 1, byeTeamNumber: null, matches: roundMatches });
+          rotationList.splice(1, 0, rotationList.pop());
         }
       }
 
@@ -1237,30 +1099,9 @@
     }
 
     function syncTagsFromTeams() {
-      const allCurrent = [];
-      state.teams.forEach(t => t.players.forEach(p => allCurrent.push(p)));
-      state.playerTags = allCurrent;
+      state.playerTags = state.teams.flatMap(t => t.players);
       renderPlayerTags();
       updateValidationUI();
-    }
-
-    function applyTiltEffect(card) {
-      return; // tilt removed: it fought with drag-and-drop
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -5;
-        const rotateY = ((x - centerX) / centerX) * 5;
-
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-      });
     }
 
     function renderTeams() {
@@ -1284,27 +1125,15 @@
       teamCountBadge.classList.remove('hidden');
       teamCountBadge.textContent = `${state.teams.length} Teams`;
       reshuffleBtn.classList.remove('hidden');
+      bottomMatchups.classList.toggle('hidden', state.teams.length < 2);
 
-      if (state.teams.length >= 2) {
-        bottomMatchups.classList.remove('hidden');
-      } else {
-        bottomMatchups.classList.add('hidden');
-      }
-
-      container.innerHTML = '';
+      const frag = document.createDocumentFragment();
 
       state.teams.forEach((team, teamIndex) => {
-        const theme = TEAM_THEMES[teamIndex % TEAM_THEMES.length];
-        
-        const wrapper = document.createElement('div');
-        wrapper.className = 'tilt-wrapper';
-
         const teamCard = document.createElement('div');
-        teamCard.className = `team-dropzone team-card-dark rounded-2xl overflow-hidden border ${team.locked ? "ring-1 ring-teal-300/40" : ""} ${theme.border} ${theme.glow} flex flex-col justify-between`;
+        teamCard.className = `team-dropzone team-card-dark rounded-2xl overflow-hidden border ${team.locked ? "ring-1 ring-teal-300/40" : ""} border-cyan-400/50 shadow-[var(--card-glow)] flex flex-col justify-between`;
         teamCard.dataset.teamIndex = teamIndex;
         teamCard.dataset.locked = !!team.locked;
-
-        applyTiltEffect(teamCard);
 
         teamCard.addEventListener('dragover', handleDragOver);
         teamCard.addEventListener('dragleave', handleDragLeave);
@@ -1382,7 +1211,7 @@
 
             item.innerHTML = `
               <div class="flex items-center gap-2.5 min-w-0">
-                <div class="w-7 h-7 rounded-full ${theme.avatarBg} border flex items-center justify-center text-[10px] font-bold font-mono shrink-0">
+                <div class="w-7 h-7 rounded-full bg-cyan-950/80 text-cyan-200 border-cyan-500/40 border flex items-center justify-center text-[10px] font-bold font-mono shrink-0">
                   ${initials}
                 </div>
                 <span class="font-medium text-xs text-slate-200 truncate group-hover:text-white">${escapeHtml(playerName)}</span>
@@ -1409,33 +1238,21 @@
 
         const footer = document.createElement('div');
         const size = team.players.length;
-        let badgeColor = 'text-slate-300';
-        let badgeLabel = `${size} members`;
-        if (size > state.squadSize) {
-          badgeColor = 'text-cyan-300';
-          badgeLabel = `${size} / ${state.squadSize} members`;
-        } else if (size === state.squadSize) {
-          badgeColor = 'text-teal-400';
-          badgeLabel = `${size} / ${state.squadSize} members`;
-        } else if (size < state.squadSize) {
-          badgeColor = 'text-slate-300';
-          badgeLabel = `${size} / ${state.squadSize} members`;
-        }
+        const badgeColor = size > state.squadSize ? 'text-cyan-300' : size === state.squadSize ? 'text-teal-400' : 'text-slate-300';
 
         footer.className = 'px-4 py-2 bg-slate-950/60 border-t border-slate-800/60 flex items-center justify-between text-[11px]';
         footer.innerHTML = `
           <span class="text-slate-400 font-mono">${team.locked ? "Locked" : "Team"}</span>
           <span class="font-mono font-semibold ${badgeColor}">
-            ${badgeLabel}
+            ${size} / ${state.squadSize} members
           </span>
         `;
 
-        teamCard.appendChild(header);
-        teamCard.appendChild(playerList);
-        teamCard.appendChild(footer);
-        wrapper.appendChild(teamCard);
-        container.appendChild(wrapper);
+        teamCard.append(header, playerList, footer);
+        frag.appendChild(teamCard);
       });
+
+      container.replaceChildren(frag);
     }
 
     function renderCarouselFixtures() {
@@ -1443,10 +1260,8 @@
       const viewContainer = document.getElementById('activeRoundViewContainer');
       const badge = document.getElementById('matchupSummaryBadge');
 
-      tabsContainer.innerHTML = '';
-      viewContainer.innerHTML = '';
-
       if (!state.rounds || state.rounds.length === 0) {
+        tabsContainer.replaceChildren();
         viewContainer.innerHTML = '<p class="text-xs text-slate-400">Matches need at least 2 teams.</p>';
         badge.textContent = '0 / 0 Done';
         return;
@@ -1464,6 +1279,7 @@
         state.activeRoundIndex = 0;
       }
 
+      const tabsFrag = document.createDocumentFragment();
       state.rounds.forEach((round, rIdx) => {
         const isActive = rIdx === state.activeRoundIndex;
         const tabBtn = document.createElement('button');
@@ -1479,8 +1295,9 @@
           state.activeRoundIndex = rIdx;
           renderCarouselFixtures();
         };
-        tabsContainer.appendChild(tabBtn);
+        tabsFrag.appendChild(tabBtn);
       });
+      tabsContainer.replaceChildren(tabsFrag);
 
       const activeRound = state.rounds[state.activeRoundIndex];
       const activeBlock = document.createElement('div');
@@ -1507,6 +1324,14 @@
       const gamesGrid = document.createElement('div');
       gamesGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-3';
 
+      const bibIcon = `
+        <span class="inline-flex items-center justify-center p-1 rounded bg-amber-400/20 text-amber-300 text-[10px] border border-amber-400/30 shrink-0 ml-1" title="Wearing Bibs">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M16 2l4 5-3 3v12H7V10L4 7l4-5h2.5a4 4 0 007 0H16z"/>
+          </svg>
+        </span>
+      `;
+
       activeRound.matches.forEach((match) => {
         const card = document.createElement('div');
         card.className = `p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
@@ -1517,14 +1342,6 @@
 
         const isTeamABibs = match.bibTeamNumber === match.teamANumber;
         const isTeamBBibs = match.bibTeamNumber === match.teamBNumber;
-
-        const bibIcon = `
-          <span class="inline-flex items-center justify-center p-1 rounded bg-amber-400/20 text-amber-300 text-[10px] border border-amber-400/30 shrink-0 ml-1" title="Wearing Bibs">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-              <path d="M16 2l4 5-3 3v12H7V10L4 7l4-5h2.5a4 4 0 007 0H16z"/>
-            </svg>
-          </span>
-        `;
 
         card.innerHTML = `
           <div class="flex items-center gap-2.5 min-w-0">
@@ -1572,7 +1389,7 @@
       });
 
       activeBlock.appendChild(gamesGrid);
-      viewContainer.appendChild(activeBlock);
+      viewContainer.replaceChildren(activeBlock);
     }
 
     function toggleGameCheck(matchId) {
@@ -1753,12 +1570,21 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
     }
-  document.addEventListener('pointermove', e => {
-      const c = e.target.closest && e.target.closest('.dark-panel-card,.team-card-dark,.fixtures-glass');
-      if (!c) return;
-      const r = c.getBoundingClientRect();
-      c.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-      c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+
+    let pointerRaf = 0;
+    document.addEventListener('pointermove', e => {
+      if (pointerRaf) return;
+      const target = e.target;
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      pointerRaf = requestAnimationFrame(() => {
+        pointerRaf = 0;
+        const c = target.closest && target.closest('.dark-panel-card,.team-card-dark,.fixtures-glass');
+        if (!c) return;
+        const r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', (clientX - r.left) + 'px');
+        c.style.setProperty('--my', (clientY - r.top) + 'px');
+      });
     }, { passive: true });
   </script>
 </body>
